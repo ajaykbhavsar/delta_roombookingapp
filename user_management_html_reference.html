@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAW DATA SHEET FOR FINISHED PRODUCT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            color: #dc3545;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 20px;
+        }
+
+        .reference-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        table td {
+            border: 1px solid #333;
+            padding: 8px;
+            vertical-align: top;
+        }
+
+        table th {
+            border: 1px solid #333;
+            padding: 8px;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .product-info-table td {
+            width: 25%;
+        }
+
+        .test-table td:nth-child(1) {
+            width: 30%;
+        }
+
+        .test-table td:nth-child(2) {
+            width: 35%;
+        }
+
+        .test-table td:nth-child(3) {
+            width: 35%;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            border: none;
+            padding: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            background-color: #e0e0e0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .nested-list {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .nested-list li {
+            margin-bottom: 8px;
+        }
+
+        .page-break {
+            page-break-before: always;
+            margin-top: 50px;
+        }
+
+        .remarks-section {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #333;
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 60px;
+            padding-top: 5px;
+        }
+
+        .calculation-box {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">alta</div>
+            <div class="company-name">ALTA LABORATORIES LTD., KHOPOLI-410203, DIST. RAIGAD</div>
+            <div class="title">RAW DATA SHEET FOR FINISHED PRODUCT</div>
+            <div class="reference-info">
+                <span>Ref. SOP No.: QC/610/038</span>
+                <span>Ref. MOA No.: QC/MOA/FP/016</span>
+                <span>Form No.: QC/RDS/FP/016-03</span>
+            </div>
+            <div class="product-name">Product: Methyl Salicylate USP-NF</div>
+        </div>
+
+        <!-- Product Information Table -->
+        <table class="product-info-table">
+            <tr>
+                <td><strong>A.R. No.:</strong> <input type="text" value="FP/200/"></td>
+                <td><strong>Batch No.:</strong> <input type="text" value="Lot"></td>
+                <td><strong>Date of Mfg.:</strong> <input type="text"></td>
+                <td><strong>Product code:</strong> <input type="text" value="200"></td>
+            </tr>
+            <tr>
+                <td><strong>Date of Receipt:</strong> <input type="text"></td>
+                <td><strong>Date of Release:</strong> <input type="text"></td>
+                <td><strong>Quantity:</strong> <input type="text"></td>
+                <td><strong>Date of Expiry:</strong> Five Years from the date of Mfg.</td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>Sample Quantities:</strong></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td><strong>Total Sample Drawn:</strong> <input type="text"> ml</td>
+                <td><strong>Control Sample:</strong> Quantity: 100 ml</td>
+                <td><strong>Analysis Sample:</strong> Quantity: 50 ml</td>
+                <td><strong>Stability Sample:</strong> <input type="text"> ml</td>
+            </tr>
+        </table>
+
+        <!-- Test Results Table -->
+        <table class="test-table">
+            <thead>
+                <tr>
+                    <th>TEST</th>
+                    <th>SPECIFICATION</th>
+                    <th>RESULT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Description (Visual test) -->
+                <tr>
+                    <td class="section-title">Description (Visual test)</td>
+                    <td>Colourless, yellowish or reddish liquid, having characteristic odour & taste of winter green. It boils between 219° and 224°, with some decomposition.</td>
+                    <td>
+                        <input type="text">
+                        <div style="margin-top: 5px; font-size: 12px;">(Instrument No.: QC/610/Ele, WeighBal/)</div>
+                    </td>
+                </tr>
+
+                <!-- Solubility -->
+                <tr>
+                    <td class="section-title">Solubility</td>
+                    <td>Soluble in alcohol & in glacial acetic acid; Slightly soluble in water.</td>
+                    <td>
+                        <div style="margin-bottom: 10px;">
+                            <strong>1. Solubility in Alcohol:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>2. Solubility in Glacial Acetic Acid:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                        <div>
+                            <strong>3. Solubility in Water:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                        <div style="margin-top: 5px; font-size: 12px;">
+                            <strong>Note:</strong><br>
+                            Solubility in Alcohol & in glacial Acetic Acid: Soluble: 1.0gm sample in 10ml to 30ml Alcohol & in glacial Acetic Acid<br>
+                            Solubility in Water: Slightly soluble: 1.0gm sample in 100ml to 1000ml in water. (0.1 gm sample in 10 ml to 100 ml in water)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 30px;">
+                        <ol>
+                            <li>Solubility in Alcohol & in glacial Acetic Acid: Soluble: 1.0gm sample in 10ml to 30ml Alcohol & in glacial Acetic Acid</li>
+                            <li>Solubility in Water: Slightly soluble: 1.0gm sample in 100ml to 1000ml in water. (0.1 gm sample in 10 ml to 100 ml in water)</li>
+                        </ol>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+
+                <!-- Identification A -->
+                <tr>
+                    <td class="section-title">Identification</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 30px;"><strong>A. Infrared Absorption</strong></td>
+                    <td>IR spectrum of the preparation of the sample exhibits maxima only at the same wavenumbers as that of the appropriately prepared corresponding USP Reference Standard.</td>
+                    <td>
+                        <strong>A.</strong> (Instrument No.: QC/610/FTIR/28)<br>
+                        <textarea placeholder="Observation:"></textarea>
+                    </td>
+                </tr>
+
+                <!-- Identification B -->
+                <tr>
+                    <td style="padding-left: 30px;"><strong>B. Chromatographic Identity</strong><br>
+                        Analysis: Proceed as directed in the assay.
+                    </td>
+                    <td>B. The retention time of the major peak of the sample solution corresponds to that of the standard solution.</td>
+                    <td>
+                        <strong>B.</strong> (Instrument No.: QC/610/UHPLC/HPLC/)<br>
+                        <textarea placeholder="Observation:"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            Page No. 1 of 2
+        </div>
+    </div>
+
+    <!-- Page 2 -->
+    <div class="container page-break">
+        <div class="header">
+            <div class="logo">alta</div>
+            <div class="company-name">ALTA LABORATORIES LTD., KHOPOLI-410203, DIST. RAIGAD</div>
+            <div class="title">RAW DATA SHEET FOR FINISHED PRODUCT</div>
+            <div class="reference-info">
+                <span>Ref. SOP No.: QC/610/038</span>
+                <span>Ref. MOA No.: QC/MOA/FP/016</span>
+                <span>Form No.: QC/RDS/FP/016-03</span>
+            </div>
+            <div class="product-name">Product: Methyl Salicylate USP-NF</div>
+        </div>
+
+        <!-- Test Results Table - Page 2 -->
+        <table class="test-table">
+            <thead>
+                <tr>
+                    <th>TEST</th>
+                    <th>SPECIFICATION</th>
+                    <th>RESULT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Assay -->
+                <tr>
+                    <td class="section-title">Assay<br>Ref. MOA No.: QC/MOA/FP/016</td>
+                    <td>NLT 98.0% and NMT 102.0%</td>
+                    <td>
+                        <div style="margin-bottom: 5px;">
+                            Instrument No.: QC/610/Ele.Weigh Bal, QC/610/UHPLC/HPLC
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            Wt. of sample: <input type="text" style="width: 80px;"> gm.
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <strong>Observation:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                        <div>
+                            Assay = <input type="text" style="width: 80px;"> %
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Limit of Salicylic Acid and Dimethyl 4-Hydroxyisophthalate -->
+                <tr>
+                    <td class="section-title">Limit of Salicylic Acid and Dimethyl 4-Hydroxyisophthalate<br>Ref. MOA No.: QC/MOA/FP/016</td>
+                    <td>Salicylic Acid: NMT 0.1%<br>Dimethyl 4-hydroxyisophthalate :NMT 0.5%</td>
+                    <td>
+                        <div style="margin-bottom: 5px;">
+                            Instrument No.: QC/610/Ele.Weigh Bal, QC/610/UHPLC
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            Wt. of sample: <input type="text" style="width: 80px;"> gm.
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <strong>Observation:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            Salicylic Acid = <input type="text" style="width: 80px;"> %
+                        </div>
+                        <div>
+                            Dimethyl 4-HIPA = <input type="text" style="width: 80px;"> %
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Solubility in 70% alcohol -->
+                <tr>
+                    <td class="section-title">Solubility in 70% alcohol</td>
+                    <td>The solution shows not more than a slight cloudiness</td>
+                    <td>
+                        <div style="margin-bottom: 5px; font-size: 12px;">
+                            One volume of synthetic Methyl Salicylate dissolves in seven volumes of 70% alcohol. (1.0 ml of synthetic Methyl Salicylate dissolves in 7ml of 70% alcohol)
+                        </div>
+                        <div>
+                            <strong>Observation:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 30px;">
+                        One volume of synthetic Methyl Salicylate dissolves in seven volumes of 70% alcohol. (1.0 ml of synthetic Methyl Salicylate dissolves in 7ml of 70% alcohol)
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+
+                <!-- Specific Gravity at 25°C -->
+                <tr>
+                    <td class="section-title">Specific Gravity at 25°C</td>
+                    <td>1.180 to 1.185</td>
+                    <td>
+                        <div style="margin-bottom: 5px;">
+                            Instrument No.: QC/610/Ele.Weigh Bal
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <strong>Observation:</strong><br>
+                            <textarea placeholder="Observation:"></textarea>
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            Wt. of Sample (A) = <input type="text" style="width: 80px;"> gm.
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            Wt. of Water (B) = <input type="text" style="width: 80px;"> gm.
+                        </div>
+                        <div class="calculation-box">
+                            Specific Gravity at 25°C = A / B<br>
+                            = <input type="text" style="width: 80px;"> / <input type="text" style="width: 80px;"><br>
+                            = <input type="text" style="width: 100px;">
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Optical Rotation -->
+                <tr>
+                    <td class="section-title">Optical Rotation<br>Synthetic Methyl Salicylate optically inactive.</td>
+                    <td>Optically inactive</td>
+                    <td>
+                        <strong>Observation:</strong><br>
+                        <textarea placeholder="Observation:"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Remarks Section -->
+        <div class="remarks-section">
+            <strong>REMARKS:</strong> The Product complies / does not comply with all the specifications of USP-NF.
+        </div>
+
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line">
+                    <strong>Analysed By</strong><br>
+                    QC Officer
+                </div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line">
+                    <strong>Checked By</strong><br>
+                    QC Head
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Page No. 2 of 2
+        </div>
+    </div>
+</body>
+</html>
+
