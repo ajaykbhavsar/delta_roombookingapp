@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('room_no')->unique();
             $table->text('description')->nullable();
+            $table->text('location')->nullable();
+            $table->string('room_status')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
@@ -28,4 +30,8 @@ return new class extends Migration
         Schema::dropIfExists('rooms');
     }
 };
+
+
+
+
 

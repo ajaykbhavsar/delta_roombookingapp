@@ -38,6 +38,7 @@ class StoreBookingRequest extends FormRequest
             'phone_number' => ['required', 'string', 'max:30'],
             'email' => ['nullable', 'email', 'max:150'],
             'address' => ['required', 'string'],
+            'room_location'=> ['required', 'string'],
             'id_proof_type' => ['required', Rule::in(array_keys(Booking::ID_PROOF_TYPES))],
             'id_number' => ['required', 'string', 'max:120'],
             'location' => ['required', Rule::in(array_keys(Booking::LOCATION_OPTIONS))],

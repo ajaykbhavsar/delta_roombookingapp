@@ -20,6 +20,7 @@ class Booking extends Model
     ];
 
     public const ROOM_STATUS_OPTIONS = [
+        ''=>'Select',
         'dirty' => 'Dirty',
         'clean' => 'Clean',
         'needs_maintenance' => 'Needs Maintenance',
@@ -98,6 +99,7 @@ class Booking extends Model
         'is_repeat_customer',
         'notes',
         'booking_status',
+        'room_location',
     ];
 
     protected $casts = [

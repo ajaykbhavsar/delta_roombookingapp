@@ -11,6 +11,7 @@ use App\Models\SystemLog;
 use Carbon\Carbon;
 use Throwable;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
@@ -89,6 +90,7 @@ class BookingController extends Controller
 
     public function create()
     {
+        // Show all active rooms initially - filtering will happen via JavaScript when dates are selected
         $rooms = $this->activeRooms();
         $roomTypes = $this->activeRoomTypes();
 
@@ -110,6 +112,11 @@ class BookingController extends Controller
         $roomType = $this->activeRoomTypesQuery()->findOrFail($request->input('room_type_id'));
 
         $payload = $request->validated();
+        $checkInAt = Carbon::parse($payload['check_in_at']);
+        $checkOutAt = Carbon::parse($payload['check_out_at']);
+
+        $this->ensureRoomIsAvailable($room->id, $checkInAt, $checkOutAt);
+
         $payload['room_rate'] = $roomType->base_rate;
         $payload['discount'] = (float) ($payload['discount'] ?? 0);
         $payload['service_charges'] = (float) ($payload['service_charges'] ?? 0);
@@ -142,13 +149,37 @@ class BookingController extends Controller
         ]));
     }
 
+    public function getAvailableRooms(Request $request)
+    {
+        $checkInAt = $this->parseDate($request->input('check_in_at'));
+        $checkOutAt = $this->parseDate($request->input('check_out_at'));
+        $excludeBookingId = $request->input('exclude_booking_id') ? (int) $request->input('exclude_booking_id') : null;
+
+        $rooms = $this->availableRooms($excludeBookingId, $checkInAt, $checkOutAt);
+
+        return response()->json([
+            'rooms' => $rooms->map(function ($room) {
+                return [
+                    'id' => $room->id,
+                    'room_no' => $room->room_no,
+                ];
+            })->values(),
+        ]);
+    }
+
     public function edit(Booking $booking)
     {
-        $rooms = $this->activeRooms();
+        // Get available rooms based on booking dates, but exclude the current booking from the occupied check
+        $rooms = $this->availableRooms(
+            $booking->id,
+            $booking->check_in_at,
+            $booking->check_out_at
+        );
         $roomTypes = $this->activeRoomTypes();
 
         $booking->load(['room', 'roomType']);
 
+        // Always include the current booking's room even if it's occupied
         if ($booking->room && ! $rooms->contains('id', $booking->room_id)) {
             $rooms->push($booking->room);
             $rooms = $rooms->unique('id')->sortBy('room_no')->values();
@@ -172,6 +203,13 @@ class BookingController extends Controller
         $roomType = $this->activeRoomTypesQuery()->findOrFail($request->input('room_type_id'));
 
         $payload = $request->validated();
+
+
+        $checkInAt = Carbon::parse($payload['check_in_at']);
+        $checkOutAt = Carbon::parse($payload['check_out_at']);
+
+        $this->ensureRoomIsAvailable($room->id, $checkInAt, $checkOutAt, $booking->id);
+
         $payload['room_rate'] = $roomType->base_rate;
         $payload['discount'] = (float) ($payload['discount'] ?? 0);
         $payload['service_charges'] = (float) ($payload['service_charges'] ?? 0);
@@ -214,6 +252,69 @@ class BookingController extends Controller
         return $this->activeRoomsQuery()->orderBy('room_no')->get();
     }
 
+    protected function availableRooms(?int $excludeBookingId = null, ?Carbon $checkInAt = null, ?Carbon $checkOutAt = null)
+    {
+        // Get room IDs that are occupied or have overlapping bookings
+        $occupiedRoomIds = Booking::query()
+            ->whereNotIn('booking_status', ['cancelled', 'checked_out'])
+            ->when($checkInAt && $checkOutAt, function ($query) use ($checkInAt, $checkOutAt) {
+                // Check for date range overlaps:
+                // New booking overlaps if: new_check_in < existing_check_out AND new_check_out > existing_check_in
+                $query->where(function ($q) use ($checkInAt, $checkOutAt) {
+                    $q->where(function ($subQ) use ($checkInAt, $checkOutAt) {
+                        // Overlap condition: existing booking starts before new booking ends
+                        // AND existing booking ends after new booking starts
+                        $subQ->where('check_in_at', '<', $checkOutAt)
+                            ->where('check_out_at', '>', $checkInAt);
+                    });
+                });
+            }, function ($query) {
+                // If no dates provided, check for currently occupied rooms
+                $now = Carbon::now();
+                $query->where(function ($q) use ($now) {
+                    // Rooms with occupancy_status = 'occupied'
+                    $q->where('occupancy_status', 'occupied')
+                        // OR rooms with active bookings (confirmed/checked_in/pending status and dates overlap)
+                        ->orWhere(function ($subQ) use ($now) {
+                            $subQ->whereIn('booking_status', ['confirmed', 'checked_in', 'pending'])
+                                ->where('check_in_at', '<=', $now)
+                                ->where('check_out_at', '>=', $now);
+                        });
+                });
+            })
+            ->when($excludeBookingId, function ($query) use ($excludeBookingId) {
+                // Exclude the current booking being edited
+                $query->where('id', '!=', $excludeBookingId);
+            })
+            ->pluck('room_id')
+            ->unique();
+
+        // Get all active rooms excluding occupied ones
+        return $this->activeRoomsQuery()
+            ->whereNotIn('id', $occupiedRoomIds)
+            ->orderBy('room_no')
+            ->get();
+    }
+
+    protected function ensureRoomIsAvailable(int $roomId, Carbon $checkInAt, Carbon $checkOutAt, ?int $ignoreBookingId = null): void
+    {
+        $hasOverlap = Booking::query()
+            ->where('room_id', $roomId)
+            ->whereNotIn('booking_status', ['cancelled', 'checked_out'])
+            ->when($ignoreBookingId, fn ($query) => $query->where('id', '!=', $ignoreBookingId))
+            ->where(function ($query) use ($checkInAt, $checkOutAt) {
+                $query->where('check_in_at', '<', $checkOutAt)
+                    ->where('check_out_at', '>', $checkInAt);
+            })
+            ->exists();
+
+        if ($hasOverlap) {
+            throw ValidationException::withMessages([
+                'room_id' => 'The selected room is already booked for the chosen dates.',
+            ]);
+        }
+    }
+
     protected function activeRoomTypes()
     {
         return $this->activeRoomTypesQuery()->orderBy('name')->get();
@@ -241,6 +342,23 @@ class BookingController extends Controller
             return null;
         }
     }
+
+    public function getRoomDetails($id)
+{
+    $room = Room::find($id);
+
+    if (!$room) {
+        return response()->json([
+            'error' => 'Room not found'
+        ], 404);
+    }
+
+    return response()->json([
+        'room_status'   => $room->room_status,
+        'location' => $room->location,
+    ]);
+}
+
 }
 
 

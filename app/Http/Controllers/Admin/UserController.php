@@ -17,7 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with(['roles'])->latest()->get();
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized access');
+        }
+        $users = User::with(['roles'])->whereIn('role',['admin','user'])->latest()->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -26,7 +29,22 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = $this->assignableRoles();
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized access');
+        }
+        $loggedRole = auth()->user()->role;
+
+    if ($loggedRole === 'super_admin') {
+        // can create admin + user
+        $roles = Role::whereIn('name', ['admin', 'user'])->get();
+    } elseif ($loggedRole === 'admin') {
+        // can only create user
+        $roles = Role::where('name', 'user')->get();
+    } else {
+        // normal user cannot create roles (optional)
+        abort(403, 'Unauthorized');
+    }
+
         return view('admin.users.create', compact('roles'));
     }
 
@@ -75,6 +93,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized access');
+        }
         $user->load('roles');
         $recentLogs = SystemLog::where('performed_by', $user->id)
             ->latest()
@@ -89,7 +110,21 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = $this->assignableRoles();
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized access');
+        }
+        $loggedRole = auth()->user()->role;
+
+    if ($loggedRole === 'super_admin') {
+        // can create admin + user
+        $roles = Role::whereIn('name', [ 'user'])->get();
+    } elseif ($loggedRole === 'admin') {
+        // can only create user
+        $roles = Role::whereIn('name', ['admin', 'user'])->get();
+    } else {
+        // normal user cannot create roles (optional)
+        abort(403, 'Unauthorized');
+    }
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
@@ -98,6 +133,9 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized access');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -145,6 +183,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized access');
+        }
+
         if (!$this->currentUser()->isSuperAdmin()) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'Only Super Admin can delete users.');

@@ -11,17 +11,23 @@ class RoomTypeController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(RoomType::class, 'roomType');
+        // $this->authorizeResource(RoomType::class, 'roomType');
     }
 
     public function index()
     {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            abort(403, 'Unauthorized');
+        }
         $roomTypes = RoomType::latest()->get();
         return view('admin.room-types.index', compact('roomTypes'));
     }
 
     public function create()
     {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            abort(403, 'Unauthorized');
+        }
         return view('admin.room-types.create');
     }
 
@@ -52,11 +58,17 @@ class RoomTypeController extends Controller
 
     public function show(RoomType $roomType)
     {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            abort(403, 'Unauthorized');
+        }
         return view('admin.room-types.show', compact('roomType'));
     }
 
     public function edit(RoomType $roomType)
     {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            abort(403, 'Unauthorized');
+        }
         return view('admin.room-types.edit', compact('roomType'));
     }
 
@@ -87,6 +99,9 @@ class RoomTypeController extends Controller
 
     public function destroy(RoomType $roomType)
     {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            abort(403, 'Unauthorized');
+        }
         $typeName = $roomType->name;
         $typeId = $roomType->id;
 

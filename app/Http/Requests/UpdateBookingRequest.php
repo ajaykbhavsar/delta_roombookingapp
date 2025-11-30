@@ -56,6 +56,7 @@ class UpdateBookingRequest extends FormRequest
             'is_repeat_customer' => ['required', 'boolean'],
             'notes' => ['nullable', 'string'],
             'booking_status' => ['required', Rule::in(array_keys(Booking::BOOKING_STATUS_OPTIONS))],
+            'room_location'=> ['required', 'string'],
         ];
     }
 }

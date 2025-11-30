@@ -1,0 +1,6 @@
+Already occupied room not show for book =>done
+Rate always like share market =>done
+Any Discount logic =>done
+Service Tax logic =>done
+Edit as booking time if fill wrong info =>done
+Room No. same location wise? =>done
