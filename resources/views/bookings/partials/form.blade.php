@@ -27,6 +27,19 @@
     $submitLabel = $isEdit ? 'Update Booking' : 'Submit Booking';
 @endphp
 
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $err)
+                <li>{{ $err }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <form action="{{ $formAction }}" method="POST">
     @csrf
     @if($isEdit)
@@ -57,19 +70,26 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+               <div class="col-md-4">
+    <label for="phone_number" class="form-label">Phone Number <span class="text-danger">*</span></label>
+    <input type="text" 
+           name="phone_number" 
+           id="phone_number"
+           value="{{ old('phone_number', $isEdit ? $booking->phone_number : '') }}"
+           class="form-control digits @error('phone_number') is-invalid @enderror"
+           placeholder="Enter phone number"
+           required
+           minlength="10"
+           maxlength="15"
+           oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+    @error('phone_number')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
                 <div class="col-md-4">
-                    <label for="phone_number" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                    <input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number', $isEdit ? $booking->phone_number : '') }}"
-                           class="form-control @error('phone_number') is-invalid @enderror"
-                           placeholder="Enter phone number" required>
-                    @error('phone_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-4">
-                    <label for="email" class="form-label">Email (optional)</label>
+                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                     <input type="email" name="email" id="email" value="{{ old('email', $isEdit ? $booking->email : '') }}"
-                           class="form-control @error('email') is-invalid @enderror" placeholder="guest@example.com">
+                           class="form-control @error('email') is-invalid @enderror" placeholder="guest@example.com" required>
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -166,56 +186,60 @@
         </div>
         <div class="card-body">
             <div class="row g-3">
+            <div class="col-md-4">
+        <div class="form-group">
+            <label class="form-label">Location <span class="text-danger">*</span></label>
+            <select name="location" id="location" class="form-control" required>
+                <option value="">Select Location</option>
+                @foreach($locations as $loc)
+                    <option value="{{ $loc->id }}"
+                        {{ old('location', $isEdit && isset($booking) ? $booking->room->location_id : '') == $loc->id ? 'selected' : '' }}>
+                        {{ $loc->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+                     <label class="form-label">Room Type <span class="text-danger">*</span></label>
+                    <select name="room_type_id" id="room_type_id" class="form-select @error('room_type_id') is-invalid @enderror" required>
+                        <option value="">Select Type</option>
+                        @foreach($roomTypes as $rt)
+                            <option value="{{ $rt->id }}"
+                                data-rate="{{ number_format($rt->base_rate ?? 0, 2, '.', '') }}"
+                                {{ (string) old('room_type_id', $defaultRoomTypeId) === (string) $rt->id ? 'selected' : '' }}>
+                                {{ $rt->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                
+                    @error('room_type_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="col-md-4">
                     <label for="room_id" class="form-label">Room Number <span class="text-danger">*</span></label>
                     <select name="room_id" id="room_id" class="form-select @error('room_id') is-invalid @enderror"
                             data-exclude-booking-id="{{ $isEdit && isset($booking) ? $booking->id : '' }}"
                             required>
                         <option value="">Select Room</option>
-                        @foreach($rooms as $room)
-                            <option value="{{ $room->id }}" {{ (string) old('room_id', $isEdit ? $booking->room_id : '') === (string) $room->id ? 'selected' : '' }}>
-                                {{ $room->room_no }}
+                        @if($isEdit && isset($booking) && $booking->room)
+                            <option value="{{ $booking->room->id }}" selected>
+                                {{ $booking->room->room_no }}
                             </option>
-                        @endforeach
+                        @endif
                     </select>
                     @error('room_id')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4">
-                    <label for="room_type_id" class="form-label">Room Type <span class="text-danger">*</span></label>
-                    <select name="room_type_id" id="room_type_id" class="form-select @error('room_type_id') is-invalid @enderror" required>
-                        <option value="">Select Type</option>
-                        @foreach($roomTypes as $type)
-                            <option value="{{ $type->id }}"
-                                    data-rate="{{ $type->base_rate }}"
-                                    {{ (string) $defaultRoomTypeId === (string) $type->id ? 'selected' : '' }}>
-                                {{ $type->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('room_type_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-4">
-                    <label for="location" class="form-label">Location / Floor <span class="text-danger">*</span></label>
-                    <select name="location" id="location" class="form-select @error('location') is-invalid @enderror" required>
-                        @foreach($locationOptions as $value => $label)
-                            <option value="{{ $value }}" {{ old('location', $isEdit ? $booking->location : array_key_first($locationOptions)) === $value ? 'selected' : '' }}>
-                                {{ $label }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('location')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+
                 <div class="col-md-4">
                     <label for="room_status" class="form-label">Room Status <span class="text-danger">*</span></label>
-                    <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required>
+                    <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required readonly>
                         @foreach($roomStatusOptions as $value => $label)
-                            <option value="{{ $value }}" {{ old('room_status', $isEdit ? $booking->room_status : 'clean') === $value ? 'selected' : '' }}>
+                            <option value="{{ $value }}" {{ old('room_status', $isEdit ? $booking->room_status : '') === $value ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                         @endforeach
@@ -230,7 +254,7 @@
                 <label for="room_location" class="form-label">Room Location <span class="text-danger">*</span></label>
                 <textarea name="room_location" id="room_location"
                 class="form-control @error('room_location') is-invalid @enderror"
-                rows="3"
+                rows="1" readonly
                 >{{ old('room_location', $isEdit ? $booking->room_location : '') }}</textarea>
 
                 @error('room_location')
@@ -240,9 +264,9 @@
                 <div class="col-md-4">
                     <label for="occupancy_status" class="form-label">Occupancy Status <span class="text-danger">*</span></label>
                     <select name="occupancy_status" id="occupancy_status"
-                            class="form-select @error('occupancy_status') is-invalid @enderror" required>
+                            class="form-select @error('occupancy_status') is-invalid @enderror" required readonly>
                         @foreach($occupancyStatusOptions as $value => $label)
-                            <option value="{{ $value }}" {{ old('occupancy_status', $isEdit ? $booking->occupancy_status : 'empty') === $value ? 'selected' : '' }}>
+                            <option value="{{ $value }}" {{ old('occupancy_status', $isEdit ? $booking->occupancy_status : '') === $value ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                         @endforeach
@@ -401,294 +425,650 @@
     </div>
 </form>
 
-<script>
-    (() => {
-        const roomTypeSelect = document.getElementById('room_type_id');
-        const roomRateHidden = document.getElementById('room_rate');
-        const roomRateDisplay = document.getElementById('room_rate_display');
-        const discountInput = document.getElementById('discount');
-        const serviceInput = document.getElementById('service_charges');
-        const totalInput = document.getElementById('total_amount_display');
-        const roomSelect = document.getElementById('room_id');
-        const checkInInput = document.getElementById('check_in_at');
-        const checkOutInput = document.getElementById('check_out_at');
-        const bookingTypeSelect = document.getElementById('booking_type');
-        const roomStatus = document.getElementById('room_status');
-        const roomLocation = document.getElementById('room_location');
+<!-- <script>
+(() => {
+    const roomTypeSelect = document.getElementById('room_type_id');
+    const roomRateHidden = document.getElementById('room_rate');
+    const roomRateDisplay = document.getElementById('room_rate_display');
+    const discountInput = document.getElementById('discount');
+    const serviceInput = document.getElementById('service_charges');
+    const totalInput = document.getElementById('total_amount_display');
+    const roomSelect = document.getElementById('room_id');
+    const checkInInput = document.getElementById('check_in_at');
+    const checkOutInput = document.getElementById('check_out_at');
+    const bookingTypeSelect = document.getElementById('booking_type');
+    const roomStatus = document.getElementById('room_status');
+    const roomLocation = document.getElementById('room_location');
 
-        if (!roomTypeSelect || !roomRateHidden || !roomRateDisplay || !discountInput || !serviceInput || !totalInput) {
+    if (!roomTypeSelect || !roomRateHidden || !roomRateDisplay || !discountInput || !serviceInput || !totalInput) return;
+
+    let hasPresetRate = roomRateHidden.dataset.hasPreset === '1';
+    let allRooms = [];
+    let updateTimeout = null;
+
+    if (roomSelect) {
+        allRooms = Array.from(roomSelect.options).map(opt => ({
+            value: opt.value,
+            text: opt.text,
+            selected: opt.selected
+        }));
+    }
+
+    const toFloat = (value) => {
+        const parsed = parseFloat(value);
+        return Number.isNaN(parsed) ? 0 : parsed;
+    };
+
+    const setRoomRate = (value) => {
+        const normalized = toFloat(value);
+        roomRateHidden.value = normalized.toFixed(2);
+        roomRateDisplay.value = normalized.toFixed(2);
+    };
+
+    const currentRoomRate = () => toFloat(roomRateHidden.value);
+
+    const updateTotals = () => {
+        const discount = toFloat(discountInput.value);
+        const service = toFloat(serviceInput.value);
+        const total = Math.max(0, (currentRoomRate() - discount) + service);
+        totalInput.value = total.toFixed(2);
+    };
+
+    const syncRateWithRoomType = (force = false) => {
+        if (!force && hasPresetRate) {
+            updateTotals();
+            return;
+        }
+        const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+        const rateFromType = option ? toFloat(option.dataset.rate || 0) : 0;
+        setRoomRate(rateFromType);
+        updateTotals();
+    };
+
+    // -------------------------
+    // Fetch rooms based on 3 filters
+    // -------------------------
+    const updateAvailableRooms = async () => {
+        if (!roomSelect) return;
+
+        const roomTypeId = roomTypeSelect.value;
+        const checkIn = checkInInput.value;
+        const checkOut = checkOutInput.value;
+
+        // If any is empty, restore all rooms
+        if (!roomTypeId || !checkIn || !checkOut) {
+            restoreAllRooms();
             return;
         }
 
-        let hasPresetRate = roomRateHidden.dataset.hasPreset === '1';
-        let allRooms = [];
-        let updateTimeout = null;
-
-        // Store all initial room options
-        if (roomSelect) {
-            allRooms = Array.from(roomSelect.options).map(opt => ({
-                value: opt.value,
-                text: opt.text,
-                selected: opt.selected
-            }));
+        // Validate dates
+        if (new Date(checkOut) <= new Date(checkIn)) {
+            restoreAllRooms();
+            return;
         }
 
-        const toFloat = (value) => {
-            const parsed = typeof value === 'number' ? value : parseFloat(value);
-            return Number.isNaN(parsed) ? 0 : parsed;
-        };
+        try {
+            const excludeBookingId = roomSelect.dataset.excludeBookingId || null;
+            const url = new URL('{{ route("bookings.available-rooms") }}', window.location.origin);
 
-        const setRoomRate = (value) => {
-            const normalized = toFloat(value);
-            roomRateHidden.value = normalized.toFixed(2);
-            roomRateDisplay.value = normalized.toFixed(2);
-        };
+            url.searchParams.append('room_type_id', roomTypeId);
+            url.searchParams.append('check_in_at', checkIn);
+            url.searchParams.append('check_out_at', checkOut);
+            if (excludeBookingId) url.searchParams.append('exclude_booking_id', excludeBookingId);
 
-        const currentRoomRate = () => toFloat(roomRateHidden.value);
-
-        const updateTotals = () => {
-            const discount = toFloat(discountInput.value);
-            const service = toFloat(serviceInput.value);
-            const total = Math.max(0, (currentRoomRate() - discount) + service);
-            totalInput.value = total.toFixed(2);
-        };
-
-        const syncRateWithRoomType = (force = false) => {
-            if (!force && hasPresetRate) {
-                updateTotals();
-                return;
-            }
-
-            const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
-            const rateFromType = option ? toFloat(option.dataset.rate || 0) : 0;
-            setRoomRate(rateFromType);
-            updateTotals();
-        };
-
-        const updateAvailableRooms = async () => {
-            if (!roomSelect || !checkInInput || !checkOutInput) {
-                return;
-            }
-
-            const checkIn = checkInInput.value;
-            const checkOut = checkOutInput.value;
-
-            // If both dates are not filled, show all rooms
-            if (!checkIn || !checkOut) {
-                restoreAllRooms();
-                return;
-            }
-
-            // Validate that check-out is after check-in
-            if (new Date(checkOut) <= new Date(checkIn)) {
-                restoreAllRooms();
-                return;
-            }
-
-            try {
-                const excludeBookingId = roomSelect.dataset.excludeBookingId || null;
-                const url = new URL('{{ route("bookings.available-rooms") }}', window.location.origin);
-                url.searchParams.append('check_in_at', checkIn);
-                url.searchParams.append('check_out_at', checkOut);
-                if (excludeBookingId) {
-                    url.searchParams.append('exclude_booking_id', excludeBookingId);
-                }
-
-                const response = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    credentials: 'same-origin',
-                });
-
-                const contentType = response.headers.get('content-type') || '';
-                if (!response.ok || !contentType.includes('application/json')) {
-                    const errorBody = await response.text();
-                    throw new Error(`Unexpected response (${response.status}): ${errorBody.substring(0, 120)}`);
-                }
-
-                const data = await response.json();
-
-                // Store currently selected room
-                const currentSelected = roomSelect.value;
-
-                // Clear and repopulate room select
-                roomSelect.innerHTML = '<option value="">Select Room</option>';
-
-                data.rooms.forEach(room => {
-                    const option = document.createElement('option');
-                    option.value = room.id;
-                    option.textContent = room.room_no;
-                    if (currentSelected && currentSelected === String(room.id)) {
-                        option.selected = true;
-                    }
-                    roomSelect.appendChild(option);
-                });
-
-                // If previously selected room is no longer available, show warning
-                if (currentSelected && !data.rooms.find(r => String(r.id) === currentSelected)) {
-                    roomSelect.classList.add('is-invalid');
-                    const feedback = document.createElement('div');
-                    feedback.className = 'invalid-feedback';
-                    feedback.textContent = 'This room is not available for the selected dates.';
-                    if (!roomSelect.nextElementSibling || !roomSelect.nextElementSibling.classList.contains('invalid-feedback')) {
-                        roomSelect.parentNode.insertBefore(feedback, roomSelect.nextSibling);
-                    }
-                } else {
-                    roomSelect.classList.remove('is-invalid');
-                    const feedback = roomSelect.nextElementSibling;
-                    if (feedback && feedback.classList.contains('invalid-feedback') && feedback.textContent.includes('not available')) {
-                        feedback.remove();
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching available rooms:', error);
-                restoreAllRooms();
-            }
-        };
-
-        const restoreAllRooms = () => {
-            if (!roomSelect || allRooms.length === 0) {
-                return;
-            }
-
-            const currentSelected = roomSelect.value;
-            roomSelect.innerHTML = '<option value="">Select Room</option>';
-
-            allRooms.forEach(room => {
-                if (room.value) { // Skip empty option
-                    const option = document.createElement('option');
-                    option.value = room.value;
-                    option.textContent = room.text;
-                    if (room.selected || currentSelected === room.value) {
-                        option.selected = true;
-                    }
-                    roomSelect.appendChild(option);
-                }
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin'
             });
 
-            roomSelect.classList.remove('is-invalid');
-            const feedback = roomSelect.nextElementSibling;
-            if (feedback && feedback.classList.contains('invalid-feedback') && feedback.textContent.includes('not available')) {
-                feedback.remove();
-            }
-        };
+            const data = await response.json();
+            const currentSelected = roomSelect.value;
 
-        // Debounce room updates to avoid too many API calls
-        const debouncedUpdateRooms = () => {
-            if (updateTimeout) {
-                clearTimeout(updateTimeout);
-            }
-            updateTimeout = setTimeout(updateAvailableRooms, 500);
-        };
+            roomSelect.innerHTML = '<option value="">Select Room</option>';
 
+            data.rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room.id;
+                option.textContent = room.room_no;
+                if (currentSelected && currentSelected === String(room.id)) option.selected = true;
+                roomSelect.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error('Error fetching rooms:', error);
+            restoreAllRooms();
+        }
+    };
+
+    const restoreAllRooms = () => {
+        if (!roomSelect || allRooms.length === 0) return;
+        const currentSelected = roomSelect.value;
+        roomSelect.innerHTML = '<option value="">Select Room</option>';
+
+        allRooms.forEach(room => {
+            if (!room.value) return;
+            const option = document.createElement('option');
+            option.value = room.value;
+            option.textContent = room.text;
+            if (room.selected || currentSelected === room.value) option.selected = true;
+            roomSelect.appendChild(option);
+        });
+    };
+
+    const debouncedUpdateRooms = () => {
+        if (updateTimeout) clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(updateAvailableRooms, 500);
+    };
+
+    // -------------------------
+    // Listeners
+    // -------------------------
+    roomTypeSelect.addEventListener('change', () => {
+        hasPresetRate = false;
+        syncRateWithRoomType(true);
+        debouncedUpdateRooms();
+    });
+
+    checkInInput.addEventListener('change', debouncedUpdateRooms);
+    checkOutInput.addEventListener('change', debouncedUpdateRooms);
+
+    discountInput.addEventListener('input', updateTotals);
+    serviceInput.addEventListener('input', updateTotals);
+
+    // Room details
+    if (roomSelect) {
+        roomSelect.addEventListener('change', function () {
+            const roomId = this.value;
+            if (!roomId) {
+                roomStatus.value = "";
+                roomLocation.value = "";
+                return;
+            }
+            fetch(`/admin/get-room-details/${roomId}`)
+                .then(res => res.json())
+                .then(data => {
+                    roomStatus.value = data.room_status ?? '';
+                    roomLocation.value = data.location ?? '';
+                    room_rate_display.value = data.base_rate ?? '';
+                    roomRateHidden.value=data.base_rate ?? '';
+                    occupancy_status.value = data.occupancy_status ?? '';
+                })
+                .catch(err => console.error(err));
+        });
+    }
+
+    // Location → Load room types
+    document.getElementById('location').addEventListener('change', function () {
+        let locationId = this.value;
+        document.getElementById('room_type_id').innerHTML = '<option value="">Select Type</option>';
+        document.getElementById('room_id').innerHTML = '<option value="">Select Room</option>';
+        if (!locationId) return;
+
+        fetch(`/get-room-types/${locationId}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item.room_type_id;
+                    opt.textContent = item.type?.name ?? "Room Type";
+                    document.getElementById('room_type_id').appendChild(opt);
+                });
+            });
+    });
+
+
+
+const locationSelect = document.getElementById('location');
+
+
+const paymentType = document.getElementById('payment_type');
+const paymentStatus = document.getElementById('payment_status');
+const paymentDetails = document.getElementById('payment_details');
+    function resetBookingFields() {
+    if (locationSelect) locationSelect.value = '';
+    if (roomTypeSelect) roomTypeSelect.value = '';
+    if (roomSelect) roomSelect.value = '';
+    if (roomStatus) roomStatus.value = '';
+    if (roomLocation) roomLocation.value = '';
+    if (discountInput) discountInput.value = '';
+    if (serviceInput) serviceInput.value = '';
+    if (totalInput) totalInput.value = '';
+    if (paymentType) paymentType.value = '';
+    if (paymentStatus) paymentStatus.value = '';
+    if (paymentDetails) paymentDetails.value = '';
+}
+if (checkInInput) checkInInput.addEventListener('change', resetBookingFields);
+if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
+
+    syncRateWithRoomType(false);
+})();
+</script> -->
+
+
+<script>
+(() => {
+    const roomTypeSelect = document.getElementById('room_type_id');
+    const roomRateHidden = document.getElementById('room_rate');
+    const roomRateDisplay = document.getElementById('room_rate_display');
+    const discountInput = document.getElementById('discount');
+    const serviceInput = document.getElementById('service_charges');
+    const totalInput = document.getElementById('total_amount_display');
+    const roomSelect = document.getElementById('room_id');
+    const checkInInput = document.getElementById('check_in_at');
+    const checkOutInput = document.getElementById('check_out_at');
+    const bookingTypeSelect = document.getElementById('booking_type');
+    const roomStatus = document.getElementById('room_status');
+    const roomLocation = document.getElementById('room_location');
+    const occupancyStatus = document.getElementById('occupancy_status');
+    const locationElem = document.getElementById('location');
+
+    if (!roomTypeSelect || !roomRateHidden || !roomRateDisplay || !discountInput || !serviceInput || !totalInput) return;
+
+    let hasPresetRate = roomRateHidden.dataset.hasPreset === '1';
+    let allRooms = [];
+    let updateTimeout = null;
+
+    if (roomSelect) {
+        allRooms = Array.from(roomSelect.options).map(opt => ({
+            value: opt.value,
+            text: opt.text,
+            selected: opt.selected
+        }));
+    }
+
+    const toFloat = (value) => {
+        const parsed = parseFloat(value);
+        return Number.isNaN(parsed) ? 0 : parsed;
+    };
+
+    const setRoomRate = (value) => {
+        const normalized = toFloat(value);
+        roomRateHidden.value = normalized.toFixed(2);
+        roomRateDisplay.value = normalized.toFixed(2);
+    };
+
+    const currentRoomRate = () => toFloat(roomRateHidden.value);
+
+    const updateTotals = () => {
+        const discount = toFloat(discountInput.value);
+        const service = toFloat(serviceInput.value);
+        const total = Math.max(0, (currentRoomRate() - discount) + service);
+        totalInput.value = total.toFixed(2);
+    };
+
+    const syncRateWithRoomType = (force = false) => {
+        if (!force && hasPresetRate) {
+            updateTotals();
+            return;
+        }
+        const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+        const rateFromType = option ? toFloat(option.dataset.rate || 0) : 0;
+        setRoomRate(rateFromType);
+        updateTotals();
+    };
+
+    // Fetch available rooms
+    const updateAvailableRooms = async () => {
+        if (!roomSelect) return;
+
+        const roomTypeId = roomTypeSelect.value;
+        const checkIn = checkInInput.value;
+        const checkOut = checkOutInput.value;
+        const currentSelectedRoom = roomSelect.value; // Store current selection
+
+        if (!roomTypeId || !checkIn || !checkOut) {
+            restoreAllRooms();
+            return;
+        }
+
+        if (new Date(checkOut) <= new Date(checkIn)) {
+            restoreAllRooms();
+            return;
+        }
+
+        try {
+            const excludeBookingId = roomSelect.dataset.excludeBookingId || null;
+            const url = new URL('{{ route("bookings.available-rooms") }}', window.location.origin);
+
+            url.searchParams.append('room_type_id', roomTypeId);
+            url.searchParams.append('check_in_at', checkIn);
+            url.searchParams.append('check_out_at', checkOut);
+            if (excludeBookingId) url.searchParams.append('exclude_booking_id', excludeBookingId);
+
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin'
+            });
+
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+
+            roomSelect.innerHTML = '<option value="">Select Room</option>';
+            const rooms = Array.isArray(data.rooms) ? data.rooms : (data || []);
+            rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room.id;
+                option.textContent = room.room_no ?? room.name ?? `Room ${room.id}`;
+                // Re-select the previously selected room if it's still available
+                if (currentSelectedRoom && currentSelectedRoom === String(room.id)) {
+                    option.selected = true;
+                }
+                roomSelect.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error('Error fetching rooms:', error);
+            restoreAllRooms();
+        }
+    };
+
+    const restoreAllRooms = () => {
+        if (!roomSelect || allRooms.length === 0) return;
+        const currentSelected = roomSelect.value;
+        roomSelect.innerHTML = '<option value="">Select Room</option>';
+
+        allRooms.forEach(room => {
+            if (!room.value) return;
+            const option = document.createElement('option');
+            option.value = room.value;
+            option.textContent = room.text;
+            if (room.selected || currentSelected === room.value) option.selected = true;
+            roomSelect.appendChild(option);
+        });
+    };
+
+    const debouncedUpdateRooms = () => {
+        if (updateTimeout) clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(updateAvailableRooms, 500);
+    };
+
+    // Listeners
+    if (roomTypeSelect) {
         roomTypeSelect.addEventListener('change', () => {
             hasPresetRate = false;
             syncRateWithRoomType(true);
+            debouncedUpdateRooms();
         });
+    }
 
-        discountInput.addEventListener('input', updateTotals);
-        serviceInput.addEventListener('input', updateTotals);
+    if (checkInInput) checkInInput.addEventListener('change', debouncedUpdateRooms);
+    if (checkOutInput) checkOutInput.addEventListener('change', debouncedUpdateRooms);
 
-        const normalizeDateValue = (value, targetType) => {
-            if (!value) {
-                return '';
-            }
+    if (discountInput) discountInput.addEventListener('input', updateTotals);
+    if (serviceInput) serviceInput.addEventListener('input', updateTotals);
 
-            if (targetType === 'date') {
-                return value.split('T')[0] ?? value;
-            }
-
-            // target datetime-local
-            if (value.includes('T')) {
-                return value;
-            }
-
-            return `${value}T12:00`;
-        };
-
-        const syncDateInputsWithBookingType = () => {
-            if (!bookingTypeSelect || !checkInInput || !checkOutInput) {
+    // Room details
+    if (roomSelect) {
+        roomSelect.addEventListener('change', function () {
+            const roomId = this.value;
+            if (!roomId) {
+                if (roomStatus) roomStatus.value = "";
+                if (roomLocation) roomLocation.value = "";
+                if (occupancyStatus) occupancyStatus.value = "";
                 return;
             }
+            fetch(`/admin/get-room-details/${roomId}`, { 
+                credentials: 'same-origin', 
+                headers: {'X-Requested-With':'XMLHttpRequest','Accept':'application/json'} 
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to fetch room details');
+                    return res.json();
+                })
+                .then(data => {
+                    if (roomStatus) roomStatus.value = data.room_status ?? '';
+                    if (roomLocation) roomLocation.value = data.location ?? '';
+                    if (occupancyStatus) occupancyStatus.value = data.occupancy_status ?? '';
+                    if (typeof data.base_rate !== 'undefined') {
+                        setRoomRate(data.base_rate);
+                    }
+                    updateTotals();
+                })
+                .catch(err => console.error(err));
+        });
+    }
 
-            const type = bookingTypeSelect.value || 'daily';
-            const useDateOnly = type === 'weekly' || type === 'monthly';
-            const desiredType = useDateOnly ? 'date' : 'datetime-local';
+    // Location → Load room types
+    if (locationElem) {
+        locationElem.addEventListener('change', function () {
+            const locationId = this.value;
+            roomTypeSelect.innerHTML = '<option value="">Select Type</option>';
+            if (roomSelect) roomSelect.innerHTML = '<option value="">Select Room</option>';
+            if (!locationId) return;
 
-            [checkInInput, checkOutInput].forEach((input) => {
-                if (input.type !== desiredType) {
-                    const newValue = normalizeDateValue(input.value, desiredType);
-                    input.type = desiredType;
-                    input.value = newValue;
-                }
-                input.placeholder = useDateOnly
-                    ? 'Select date'
-                    : 'Select date and time';
-            });
+            fetch(`/get-room-types/${locationId}`, { 
+                credentials: 'same-origin', 
+                headers: {'X-Requested-With':'XMLHttpRequest','Accept':'application/json'} 
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to load room types');
+                    return res.json();
+                })
+                .then(data => {
+                    const list = Array.isArray(data) ? data : (data.room_types || []);
+                    list.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item.room_type_id ?? item.id ?? '';
+                        opt.textContent = item.type?.name ?? item.name ?? 'Room Type';
+                        opt.dataset.rate = item.base_rate ?? (item.type?.base_rate ?? 0);
+                        roomTypeSelect.appendChild(opt);
+                    });
+                    syncRateWithRoomType(true);
+                })
+                .catch(err => console.error(err));
+        });
+    }
 
-            debouncedUpdateRooms();
-        };
+    const paymentType = document.getElementById('payment_type');
+    const paymentStatus = document.getElementById('payment_status');
+    const paymentDetails = document.getElementById('payment_details');
 
-        if (bookingTypeSelect) {
-            bookingTypeSelect.addEventListener('change', () => {
-                syncDateInputsWithBookingType();
-            });
+    function resetBookingFields() {
+        // REMOVED: locationElem, roomTypeSelect, roomSelect - these now persist
+        if (roomStatus) roomStatus.value = '';
+        if (roomLocation) roomLocation.value = '';
+        if (occupancyStatus) occupancyStatus.value = '';
+        if (discountInput) discountInput.value = '';
+        if (serviceInput) serviceInput.value = '';
+        if (totalInput) totalInput.value = '';
+        if (paymentType) paymentType.value = '';
+        if (paymentStatus) paymentStatus.value = '';
+        if (paymentDetails) paymentDetails.value = '';
+    }
 
-            // Initialize once
-            syncDateInputsWithBookingType();
-        }
+    if (checkInInput) checkInInput.addEventListener('change', resetBookingFields);
+    if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
 
-        // Listen for date changes to update available rooms
-        if (checkInInput && checkOutInput) {
-            checkInInput.addEventListener('change', debouncedUpdateRooms);
-            checkOutInput.addEventListener('change', debouncedUpdateRooms);
-            checkInInput.addEventListener('input', debouncedUpdateRooms);
-            checkOutInput.addEventListener('input', debouncedUpdateRooms);
+    // Initialize form on page load for edit mode
+    const initializeFormOnLoad = async () => {
+        const locationId = locationElem?.value;
+        const roomTypeId = roomTypeSelect?.value;
+        const roomId = roomSelect?.value;
 
-            // Check if dates are already filled on page load (e.g., after validation errors)
-            // and filter rooms accordingly
-            if (checkInInput.value && checkOutInput.value) {
-                // Small delay to ensure DOM is ready
-                setTimeout(() => {
-                    updateAvailableRooms();
-                }, 100);
+        // If location is selected, load room types
+        if (locationId && locationElem) {
+            try {
+                const res = await fetch(`/get-room-types/${locationId}`, {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                });
+                if (!res.ok) throw new Error('Failed to load room types');
+                const data = await res.json();
+                const list = Array.isArray(data) ? data : (data.room_types || []);
+                
+                roomTypeSelect.innerHTML = '<option value="">Select Type</option>';
+                list.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item.room_type_id ?? item.id ?? '';
+                    opt.textContent = item.type?.name ?? item.name ?? 'Room Type';
+                    opt.dataset.rate = item.base_rate ?? (item.type?.base_rate ?? 0);
+                    if (opt.value === String(roomTypeId)) opt.selected = true;
+                    roomTypeSelect.appendChild(opt);
+                });
+                syncRateWithRoomType(true);
+            } catch (err) {
+                console.error('Error loading room types:', err);
             }
         }
 
+        // If room type and dates are selected, load available rooms
+        if (roomTypeId && checkInInput.value && checkOutInput.value) {
+            try {
+                const excludeBookingId = roomSelect.dataset.excludeBookingId || null;
+                const url = new URL('{{ route("bookings.available-rooms") }}', window.location.origin);
+                url.searchParams.append('room_type_id', roomTypeId);
+                url.searchParams.append('check_in_at', checkInInput.value);
+                url.searchParams.append('check_out_at', checkOutInput.value);
+                if (excludeBookingId) url.searchParams.append('exclude_booking_id', excludeBookingId);
 
-        // --------------------------
-// Fetch Room Details on Select
-// --------------------------
-if (roomSelect) {
-    roomSelect.addEventListener('change', function () {
-        const roomId = this.value;
+                const res = await fetch(url, {
+                    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    credentials: 'same-origin'
+                });
+                if (!res.ok) throw new Error('Failed to load rooms');
+                const data = await res.json();
+                const rooms = Array.isArray(data.rooms) ? data.rooms : (data || []);
 
-        if (!roomId) {
-            roomStatus.value = "";
-            roomLocation.value = "";
-            return;
+                roomSelect.innerHTML = '<option value="">Select Room</option>';
+                rooms.forEach(room => {
+                    const option = document.createElement('option');
+                    option.value = room.id;
+                    option.textContent = room.room_no ?? room.name ?? `Room ${room.id}`;
+                    if (option.value === String(roomId)) option.selected = true;
+                    roomSelect.appendChild(option);
+                });
+
+                // Trigger room details load if room is selected
+                if (roomId) {
+                    roomSelect.dispatchEvent(new Event('change'));
+                }
+            } catch (err) {
+                console.error('Error loading rooms:', err);
+            }
+        }
+    };
+
+    // Call on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeFormOnLoad);
+    } else {
+        initializeFormOnLoad();
+    }
+
+    syncRateWithRoomType(false);
+})();
+</script>
+
+
+
+<script>
+(() => {
+    const idProofTypeSelect = document.getElementById('id_proof_type');
+    const idNumberInput = document.getElementById('id_number');
+
+    if (!idProofTypeSelect || !idNumberInput) return;
+
+    // Define validation rules for each ID proof type
+    const idValidationRules = {
+        'passport': {
+            pattern: /^[A-Z0-9]{6,9}$/,
+            minLength: 6,
+            maxLength: 9,
+            message: 'Passport must be 6-9 alphanumeric characters'
+        },
+        'aadhar': {
+            pattern: /^[0-9]{12}$/,
+            minLength: 12,
+            maxLength: 12,
+            message: 'Aadhar must be exactly 12 digits'
+        },
+        'pan': {
+            pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+            minLength: 10,
+            maxLength: 10,
+            message: 'PAN format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)'
+        },
+        'driving_license': {
+            pattern: /^[A-Z0-9]{8,20}$/,
+            minLength: 8,
+            maxLength: 20,
+            message: 'Driving License must be 8-20 alphanumeric characters'
+        },
+        'voter_id': {
+            pattern: /^[A-Z]{3}[0-9]{7}$/,
+            minLength: 10,
+            maxLength: 10,
+            message: 'Voter ID format: 3 letters followed by 7 digits'
+        }
+    };
+
+    const validateIdNumber = () => {
+        const proofType = idProofTypeSelect.value;
+        const idValue = idNumberInput.value.trim();
+
+        // Clear previous error state
+        idNumberInput.classList.remove('is-invalid');
+        const existingError = idNumberInput.parentElement.querySelector('.invalid-feedback');
+        if (existingError) existingError.remove();
+
+        // If no proof type selected or ID is empty, skip validation
+        if (!proofType || !idValue) return true;
+
+        const rule = idValidationRules[proofType];
+        
+        if (!rule) {
+            console.warn(`No validation rule for ID proof type: ${proofType}`);
+            return true;
         }
 
-        fetch(`/admin/get-room-details/${roomId}`)
-            .then(response => response.json())
-            .then(data => {
-                // Set room_status (select)
-                if (roomStatus) {
-                    roomStatus.value = data.room_status ?? '';
-                }
+        // Check length
+        if (idValue.length < rule.minLength || idValue.length > rule.maxLength) {
+            showIdError(`${rule.message}`);
+            return false;
+        }
 
-                // Set room_location (textarea)
-                if (roomLocation) {
-                    roomLocation.value = data.location ?? '';
-                }
-            })
-            .catch(error => console.error('Error fetching room details:', error));
+        // Check pattern
+        if (!rule.pattern.test(idValue)) {
+            showIdError(`${rule.message}`);
+            return false;
+        }
+
+        return true;
+    };
+
+    const showIdError = (message) => {
+        idNumberInput.classList.add('is-invalid');
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback';
+        errorDiv.textContent = message;
+        idNumberInput.parentElement.appendChild(errorDiv);
+    };
+
+    // Validate on ID Proof Type change
+    idProofTypeSelect.addEventListener('change', () => {
+        idNumberInput.value = ''; // Clear ID when proof type changes
+        idNumberInput.classList.remove('is-invalid');
+        const existingError = idNumberInput.parentElement.querySelector('.invalid-feedback');
+        if (existingError) existingError.remove();
     });
-}
 
-        syncRateWithRoomType(false);
-    })();
+    // Validate on ID Number input
+    idNumberInput.addEventListener('blur', validateIdNumber);
+    idNumberInput.addEventListener('input', validateIdNumber);
+
+    // Validate on form submit
+    const form = idNumberInput.closest('form');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            if (!validateIdNumber()) {
+                e.preventDefault();
+                idNumberInput.focus();
+            }
+        });
+    }
+})();
 </script>
+
+
+
 

@@ -29,10 +29,10 @@
 
         <style>
             :root {
-                --bs-primary: #0BACE1;
+                --bs-primary: #1f8c82;
                 --bs-primary-rgb: 31, 140, 130;
                 --bs-secondary: #475569;
-                --bs-success: #0BACE1;
+                --bs-success: #22c55e;
                 --bs-info: #0ea5e9;
                 --bs-warning: #f59e0b;
                 --bs-danger: #ef4444;
@@ -40,7 +40,7 @@
                 --bs-dark: #0f172a;
                 --booking-surface: #eef6f4;
                 --booking-deep: #0a2e36;
-               --booking-gradient: linear-gradient(135deg, #0BACE1 0%, #0898CB 55%, #06749D 100%);
+                --booking-gradient: linear-gradient(135deg, #1f8c82 0%, #0f766e 55%, #0b4f56 100%);
                 --booking-card-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
             }
 
@@ -144,18 +144,12 @@
             }
 
             #layout-navbar {
-                    position: fixed;
-    top: 0;
-    left: 260px;
-    right: 0;
-    z-index: 1029;
-    height: 70px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border: 0px solid;
-    background: #ffffff;
+                position: fixed;
+                top: 0;
+                left: 260px;
+                right: 0;
+                z-index: 1029;
+                height: 70px;
             }
 
             .layout-page {
@@ -167,15 +161,12 @@
             .content-wrapper {
                 padding: 1.5rem;
             }
-            .navbar-nav-right{
-                position:fixed; right:290px;
-            }
 
             .card {
                 background: #ffffff;
                 border: 0;
                 box-shadow: var(--booking-card-shadow);
-                border-radius: 0.45rem;
+                border-radius: 0.85rem;
                 margin-bottom: 1.5rem;
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
@@ -203,13 +194,13 @@
 
             .btn-primary {
                 background: var(--booking-gradient);
-                border-color: #0d6efd;
+                border-color: #0f766e;
                 box-shadow: 0 10px 20px rgba(15, 118, 110, 0.35);
             }
 
             .btn-primary:hover {
-                background: linear-gradient(135deg, #0d6efd, #0d6efd);
-                border-color: #0d6efd;
+                background: linear-gradient(135deg, #1b776f, #0a4e54);
+                border-color: #0a4e54;
             }
 
             .btn-outline-warning {
@@ -359,17 +350,14 @@
             .text-bg-primary,
             .bg-success,
             .text-bg-success {
-                 background: #0BACE1 !important; 
+                background: var(--booking-gradient) !important;
                 color: #ffffff !important;
             }
 
             .badge.bg-primary,
             .badge.bg-success {
-                /* background: rgba(31, 140, 130, 0.25); */
+                background: rgba(31, 140, 130, 0.25);
                 color: var(--bs-primary);
-            }
-            .card-header{
-                    background: #3ecbff!important;
             }
         </style>
     </head>
@@ -416,14 +404,22 @@
                         </li>
                         @endif
 
-                        <!-- @can('viewAny', \App\Models\Product::class)
-                            <li class="menu-item {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.products.index') }}" class="menu-link">
-                                    <i class="fa-solid fa-box menu-icon"></i>
-                                    <span>Manage Products</span>
+                        @can('viewAny', \App\Models\Location::class)
+                            <li class="menu-item {{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.locations.index') }}" class="menu-link">
+                                    <i class="fa-solid fa-location-dot menu-icon"></i>
+                                    <span>Manage Locations</span>
                                 </a>
                             </li>
-                        @endcan -->
+                        @endcan
+                          @can('viewAny', \App\Models\RoomType::class)
+                            <li class="menu-item {{ request()->routeIs('admin.room-types.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.room-types.index') }}" class="menu-link">
+                                    <i class="fa-solid fa-layer-group menu-icon"></i>
+                                    <span>Manage Room Types</span>
+                                </a>
+                            </li>
+                        @endcan
                         @can('viewAny', \App\Models\Room::class)
                             <li class="menu-item {{ request()->routeIs('admin.rooms.*') ? 'active' : '' }}">
                                 <a href="{{ route('admin.rooms.index') }}" class="menu-link">
@@ -432,14 +428,7 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('viewAny', \App\Models\RoomType::class)
-                            <li class="menu-item {{ request()->routeIs('admin.room-types.*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.room-types.index') }}" class="menu-link">
-                                    <i class="fa-solid fa-layer-group menu-icon"></i>
-                                    <span>Manage Room Types</span>
-                                </a>
-                            </li>
-                        @endcan
+                      
                         @can('viewAny', \App\Models\Booking::class)
                             <li class="menu-item {{ request()->routeIs('bookings.*') ? 'active' : '' }}">
                                 <a href="{{ route('bookings.index') }}" class="menu-link">

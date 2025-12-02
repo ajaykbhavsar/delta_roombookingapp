@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2025 at 11:11 AM
+-- Generation Time: Dec 02, 2025 at 07:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -68,12 +68,8 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`id`, `reference_no`, `room_id`, `room_type_id`, `created_by`, `first_name`, `last_name`, `phone_number`, `email`, `address`, `id_proof_type`, `id_number`, `location`, `room_status`, `room_location`, `occupancy_status`, `additional_description`, `booking_type`, `check_in_at`, `check_out_at`, `guest_count`, `room_rate`, `discount`, `service_charges`, `total_amount`, `payment_type`, `payment_status`, `payment_details`, `is_repeat_customer`, `notes`, `booking_status`, `created_at`, `updated_at`) VALUES
-(1, 'BK-251124-BNFM', 1, 2, 3, 'Siddharth', 'sheth', '7405136625', NULL, 'test', 'aadhar', '1234567895555', 'first_floor', 'clean', NULL, 'occupied', 'test', 'daily', '2025-11-24 18:00:00', '2025-11-25 09:00:00', 2, 0.00, 0.00, 0.00, 0.00, 'cash', 'pending', 'test', 0, 'test', 'checked_out', '2025-11-24 12:17:29', '2025-11-26 05:48:04'),
-(2, 'BK-251126-PPPA', 1, 2, 3, 'Krishna', 'Krishna', '01234567890', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '1212121212121221', 'first_floor', 'clean', NULL, 'occupied', NULL, 'daily', '2025-11-26 11:20:00', '2025-11-27 11:20:00', 1, 0.00, 0.00, 0.00, 0.00, 'cash', 'pending', NULL, 0, NULL, 'checked_in', '2025-11-26 05:50:42', '2025-11-26 06:03:48'),
-(3, 'BK-251126-JGZ6', 1, 1, 3, 'Siddharth', 'sheth', '7405136625', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '1212121212122', 'first_floor', 'clean', NULL, 'occupied', NULL, 'daily', '2025-11-26 11:20:00', '2025-11-27 11:31:00', 1, 0.00, 0.00, 0.00, 0.00, 'cash', 'pending', NULL, 0, NULL, 'pending', '2025-11-26 06:02:45', '2025-11-26 06:02:45'),
-(4, 'BK-251126-VFZO', 2, 1, 3, 'Krishna', 'Krishna', '01234567890', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '12121212', 'second_floor', 'clean', NULL, 'occupied', NULL, 'daily', '2025-11-26 11:34:00', '2025-11-27 11:34:00', 1, 300.00, 50.00, 20.00, 270.00, 'cash', 'pending', NULL, 0, NULL, 'pending', '2025-11-26 06:04:24', '2025-11-26 06:34:03'),
-(5, 'BK-251126-JNNU', 3, 1, 3, 'Test', 'Krishna', '01234567890', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '1212121212', 'second_floor', 'clean', 'Left Side Near Reception', 'occupied', 'test', 'daily', '2025-11-27 13:54:00', '2025-11-28 13:54:00', 1, 300.00, 0.00, 18.00, 318.00, 'cash', 'paid', NULL, 0, NULL, 'confirmed', '2025-11-26 08:25:08', '2025-11-26 08:50:48'),
-(6, 'BK-251126-D64L', 3, 2, 4, 'Krishna', 'Krishna', '01234567890', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '543535354354', 'first_floor', 'clean', 'Left Side Near Reception', 'reserved', NULL, 'weekly', '2025-11-29 00:00:00', '2025-12-01 00:00:00', 1, 800.00, 0.00, 0.00, 800.00, 'cash', 'pending', NULL, 0, NULL, 'confirmed', '2025-11-26 09:15:03', '2025-11-26 09:15:03');
+(1, 'BK-251202-YROO', 1, 1, 3, 'Krishna', 'Krishna', '01234567890', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '12121212122', '2', 'clean', 'Kareli bag', 'occupied', NULL, 'daily', '2025-12-02 10:47:00', '2025-12-03 10:47:00', 1, 300.00, 12.00, 22.00, 310.00, 'card', 'paid', 'test', 0, NULL, 'pending', '2025-12-02 05:17:42', '2025-12-02 05:17:42'),
+(2, 'BK-251202-HKF0', 4, 1, 3, 'Krishna', 'Krishna', '01234567890', 'krishnarohit2201@gmail.com', 'Test\r\nTest', 'aadhar', '121211212122', '2', 'clean', 'Kareli bag', 'empty', NULL, 'daily', '2025-12-02 11:04:00', '2025-12-03 11:04:00', 1, 300.00, 12.00, 12.00, 300.00, 'cash', 'pending', 'test', 0, NULL, 'confirmed', '2025-12-02 05:35:17', '2025-12-02 05:35:17');
 
 -- --------------------------------------------------------
 
@@ -92,10 +88,7 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('bokking-application-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:0:{}s:11:\"permissions\";a:0:{}s:5:\"roles\";a:0:{}}', 1764221976),
-('coa-cache-cache-admin@gmail.com|127.0.0.1', 'i:2;', 1764136355),
-('coa-cache-cache-admin@gmail.com|127.0.0.1:timer', 'i:1764136355;', 1764136355),
-('coa-cache-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:0:{}s:11:\"permissions\";a:0:{}s:5:\"roles\";a:0:{}}', 1764222469);
+('coa-cache-cache-spatie.permission.cache', 'a:3:{s:5:\"alias\";a:0:{}s:11:\"permissions\";a:0:{}s:5:\"roles\";a:0:{}}', 1764738484);
 
 -- --------------------------------------------------------
 
@@ -163,6 +156,30 @@ CREATE TABLE `job_batches` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `locations`
+--
+
+CREATE TABLE `locations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `location_id` varchar(255) DEFAULT NULL,
+  `unique_id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`id`, `location_id`, `unique_id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'LOC-0001', 'LOC-C1A1C39D', 'ManjalPur', 1, '2025-12-01 11:29:30', '2025-12-01 11:38:12'),
+(2, 'LOC-0002', 'LOC-C23621DC', 'Kareli bag', 1, '2025-12-01 11:29:39', '2025-12-01 11:38:12');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -196,7 +213,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '2025_11_24_010000_create_rooms_table', 9),
 (19, '2025_11_24_020000_create_room_types_table', 10),
 (20, '2025_11_24_030100_add_base_rate_to_room_types_table', 11),
-(21, '2025_11_24_040000_create_bookings_table', 11);
+(21, '2025_11_24_040000_create_bookings_table', 11),
+(22, '2025_10_31_174659_create_locations_table', 12),
+(23, '2025_12_01_100000_add_location_id_to_locations_table', 13),
+(24, '2025_12_01_100100_update_rooms_with_relationship_fields', 13),
+(25, '2025_12_01_110000_add_unique_room_combination', 14);
 
 -- --------------------------------------------------------
 
@@ -261,10 +282,10 @@ CREATE TABLE `permissions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Table structure for table `product`
 --
 
-CREATE TABLE `products` (
+CREATE TABLE `product` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `unique_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -274,11 +295,12 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `products`
+-- Dumping data for table `product`
 --
 
-INSERT INTO `products` (`id`, `unique_id`, `title`, `is_active`, `created_at`, `updated_at`) VALUES
-(4, 'PRD-FDEDB5A1', 'Methyl Salicylate USP', 1, '2025-11-03 12:28:14', '2025-11-03 12:28:14');
+INSERT INTO `product` (`id`, `unique_id`, `title`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'PRD-FDEDB5A1', 'Methyl Salicylate USP', 1, '2025-11-03 12:28:14', '2025-11-03 12:28:14'),
+(2, 'fdsfsdfsf', 'test', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -323,9 +345,13 @@ CREATE TABLE `role_has_permissions` (
 CREATE TABLE `rooms` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `room_no` varchar(255) NOT NULL,
+  `location_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `room_type_id` bigint(20) UNSIGNED DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `location` text DEFAULT NULL,
+  `base_rate` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `location_details` text DEFAULT NULL,
   `room_status` varchar(200) DEFAULT NULL,
+  `occupancy_status` varchar(255) NOT NULL DEFAULT 'empty',
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -335,10 +361,10 @@ CREATE TABLE `rooms` (
 -- Dumping data for table `rooms`
 --
 
-INSERT INTO `rooms` (`id`, `room_no`, `description`, `location`, `room_status`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Room No 001', NULL, NULL, NULL, 1, '2025-11-24 09:42:30', '2025-11-24 09:42:30'),
-(2, 'Room -2', 'test', NULL, NULL, 1, '2025-11-26 05:52:08', '2025-11-26 05:52:08'),
-(3, 'Room 003', 'Two room and Two bad', 'Left Side Near Reception', 'clean', 1, '2025-11-26 06:48:56', '2025-11-26 07:08:31');
+INSERT INTO `rooms` (`id`, `room_no`, `location_id`, `room_type_id`, `description`, `base_rate`, `location_details`, `room_status`, `occupancy_status`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Room 1', 2, 1, 'test', 300.00, NULL, 'clean', 'occupied', 1, '2025-12-01 11:46:22', '2025-12-01 11:46:22'),
+(2, '302', 2, 2, NULL, 200.00, NULL, 'clean', 'occupied', 1, '2025-12-01 12:39:04', '2025-12-01 12:39:04'),
+(4, 'Room 1302', 2, 1, NULL, 250.00, NULL, 'clean', 'empty', 1, '2025-12-01 12:39:55', '2025-12-01 12:39:55');
 
 -- --------------------------------------------------------
 
@@ -362,8 +388,7 @@ CREATE TABLE `room_types` (
 
 INSERT INTO `room_types` (`id`, `name`, `description`, `base_rate`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 'NK', NULL, 300.00, 1, '2025-11-24 09:55:35', '2025-11-26 06:33:17'),
-(2, 'NK2', NULL, 800.00, 1, '2025-11-24 09:55:42', '2025-11-26 06:33:10'),
-(3, 'NK3', NULL, 500.00, 1, '2025-11-24 09:55:53', '2025-11-26 06:33:01');
+(2, 'NK2', NULL, 800.00, 1, '2025-11-24 09:55:42', '2025-11-26 06:33:10');
 
 -- --------------------------------------------------------
 
@@ -385,10 +410,10 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('3xR6PrVlcp2P5OcpuYTMNGbMKJwnRWjs3xxVNK2i', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMXhkSXc1akVkN3NLSTJWejI2SWxTdk1EZjFpd0NNVGRVZ2N4N2RnciI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi91c2Vycy9jcmVhdGUiO3M6NToicm91dGUiO3M6MTg6ImFkbWluLnVzZXJzLmNyZWF0ZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764149321),
-('fiIVYBR2PdY1REGeMiSx5d7dUn1gMyTA52mtVA1A', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiS2hzOThJcEVJMkphdmtCZDVITnJnbTNpQVloUm1OMG9EM0d4RFF1NCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO3M6NToicm91dGUiO3M6OToiZGFzaGJvYXJkIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1764150760),
-('I0N4AFEBzMg6LJjfzLRy4hfHNCfT6kqgF91kCKXL', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTEg2WXNwVGRVcFZTdUMxV3k3S001bDA5MVZ4UlZyYnpGMnJLYnduViI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ib29raW5ncyI7czo1OiJyb3V0ZSI7czoxNDoiYm9va2luZ3MuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO30=', 1764151060),
-('SQpVXmL1H3RXdwOtgJUPnXskbIIYhabgWSPERxiq', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoia3pTMkQyNDhBWm9QMDJrOU0wUG5kVzZpemJtOXlySzNwNXFvbDhpMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fX0=', 1764151068);
+('Ds227MmaUui7rBzxasXwS7X9T9lG63lqN99X55jg', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQ2FOZG5BM3VzaGdhMXJybFVNUmhRWDlsaUhRQnA0YWN4bWkzODRCMiI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ib29raW5ncy8yIjtzOjU6InJvdXRlIjtzOjEzOiJib29raW5ncy5zaG93Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mzt9', 1764657392),
+('exPx2BUBOd0QbvuuEezwDsax6VmlEtO8lzem34Le', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMWh5VDBNYWswenk1aGx0RVpYVGtMcExwYXc5SFdmelh3SjltMFp4diI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9yb29tcy8xL2VkaXQiO3M6NToicm91dGUiO3M6MTY6ImFkbWluLnJvb21zLmVkaXQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1764595253),
+('J5Uqeuzc3XSSJnwm4Wc3hjlYHsrrEtwz4Yjtlt6x', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQTdqSDJpQ01PeGN2ZWloOEREcUgzRXFMWHR2Q1h3anZBcmtkVkVsTSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ib29raW5ncy9jcmVhdGUiO3M6NToicm91dGUiO3M6MTU6ImJvb2tpbmdzLmNyZWF0ZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjM7fQ==', 1764595363),
+('nXtKQ0EI7nRDCTOjqzmVLXYHBomFRjLDtNAELJYQ', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNVlURGRRbkI2YWhac01seWg4NUYwbnFHUVFHdjA0MWRPT05yVUM3cSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9yb29tcyI7czo1OiJyb3V0ZSI7czoxNzoiYWRtaW4ucm9vbXMuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1764656677);
 
 -- --------------------------------------------------------
 
@@ -410,38 +435,13 @@ CREATE TABLE `system_logs` (
 --
 
 INSERT INTO `system_logs` (`id`, `action`, `payload`, `performed_by`, `created_at`, `updated_at`) VALUES
-(1, 'user_updated', '{\"summary\":\"Updated user Test User\",\"user_id\":2}', 1, '2025-11-24 09:30:23', '2025-11-24 09:30:23'),
-(2, 'room_created', '{\"summary\":\"Created room Room No 001\",\"room_id\":1}', 1, '2025-11-24 09:42:30', '2025-11-24 09:42:30'),
-(3, 'room_type_created', '{\"summary\":\"Created room type NK\",\"room_type_id\":1}', 1, '2025-11-24 09:55:35', '2025-11-24 09:55:35'),
-(4, 'room_type_created', '{\"summary\":\"Created room type NK2\",\"room_type_id\":2}', 1, '2025-11-24 09:55:42', '2025-11-24 09:55:42'),
-(5, 'room_type_created', '{\"summary\":\"Created room type NK3\",\"room_type_id\":3}', 1, '2025-11-24 09:55:53', '2025-11-24 09:55:53'),
-(6, 'user_updated', '{\"summary\":\"Updated user Admin User\",\"user_id\":1}', 1, '2025-11-24 09:56:18', '2025-11-24 09:56:18'),
-(7, 'booking_created', '{\"summary\":\"Created booking BK-251124-BNFM\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-24 12:17:29', '2025-11-24 12:17:29'),
-(8, 'booking_updated', '{\"summary\":\"Updated booking BK-251124-BNFM\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-24 12:43:08', '2025-11-24 12:43:08'),
-(9, 'booking_updated', '{\"summary\":\"Updated booking BK-251124-BNFM\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-24 12:59:15', '2025-11-24 12:59:15'),
-(10, 'booking_updated', '{\"summary\":\"Updated booking BK-251124-BNFM\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-24 13:00:10', '2025-11-24 13:00:10'),
-(11, 'booking_updated', '{\"summary\":\"Updated booking BK-251124-BNFM\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-26 05:48:04', '2025-11-26 05:48:04'),
-(12, 'booking_created', '{\"summary\":\"Created booking BK-251126-PPPA\",\"booking_id\":2,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-26 05:50:42', '2025-11-26 05:50:42'),
-(13, 'room_created', '{\"summary\":\"Created room Room -2\",\"room_id\":2}', 1, '2025-11-26 05:52:08', '2025-11-26 05:52:08'),
-(14, 'booking_created', '{\"summary\":\"Created booking BK-251126-JGZ6\",\"booking_id\":3,\"room_id\":1,\"room_type_id\":1}', 3, '2025-11-26 06:02:45', '2025-11-26 06:02:45'),
-(15, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-PPPA\",\"booking_id\":2,\"room_id\":1,\"room_type_id\":2}', 3, '2025-11-26 06:03:48', '2025-11-26 06:03:48'),
-(16, 'booking_created', '{\"summary\":\"Created booking BK-251126-VFZO\",\"booking_id\":4,\"room_id\":1,\"room_type_id\":1}', 3, '2025-11-26 06:04:24', '2025-11-26 06:04:24'),
-(17, 'room_type_updated', '{\"summary\":\"Updated room type NK3\",\"room_type_id\":3}', 1, '2025-11-26 06:33:01', '2025-11-26 06:33:01'),
-(18, 'room_type_updated', '{\"summary\":\"Updated room type NK2\",\"room_type_id\":2}', 1, '2025-11-26 06:33:10', '2025-11-26 06:33:10'),
-(19, 'room_type_updated', '{\"summary\":\"Updated room type NK\",\"room_type_id\":1}', 1, '2025-11-26 06:33:17', '2025-11-26 06:33:17'),
-(20, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-VFZO\",\"booking_id\":4,\"room_id\":2,\"room_type_id\":1}', 3, '2025-11-26 06:34:03', '2025-11-26 06:34:03'),
-(21, 'room_created', '{\"summary\":\"Created room Room 003\",\"room_id\":3}', 1, '2025-11-26 06:48:56', '2025-11-26 06:48:56'),
-(22, 'room_updated', '{\"summary\":\"Updated room Room 003\",\"room_id\":3}', 1, '2025-11-26 06:51:44', '2025-11-26 06:51:44'),
-(23, 'room_updated', '{\"summary\":\"Updated room Room 003\",\"room_id\":3}', 1, '2025-11-26 06:52:30', '2025-11-26 06:52:30'),
-(24, 'room_updated', '{\"summary\":\"Updated room Room 003\",\"room_id\":3}', 1, '2025-11-26 06:54:48', '2025-11-26 06:54:48'),
-(25, 'room_updated', '{\"summary\":\"Updated room Room 003\",\"room_id\":3}', 1, '2025-11-26 07:08:31', '2025-11-26 07:08:31'),
-(26, 'booking_created', '{\"summary\":\"Created booking BK-251126-JNNU\",\"booking_id\":5,\"room_id\":3,\"room_type_id\":1}', 3, '2025-11-26 08:25:08', '2025-11-26 08:25:08'),
-(27, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-JNNU\",\"booking_id\":5,\"room_id\":3,\"room_type_id\":1}', 3, '2025-11-26 08:25:33', '2025-11-26 08:25:33'),
-(28, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-JNNU\",\"booking_id\":5,\"room_id\":3,\"room_type_id\":1}', 3, '2025-11-26 08:39:15', '2025-11-26 08:39:15'),
-(29, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-JNNU\",\"booking_id\":5,\"room_id\":3,\"room_type_id\":1}', 3, '2025-11-26 08:48:14', '2025-11-26 08:48:14'),
-(30, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-JNNU\",\"booking_id\":5,\"room_id\":2,\"room_type_id\":1}', 3, '2025-11-26 08:49:49', '2025-11-26 08:49:49'),
-(31, 'booking_updated', '{\"summary\":\"Updated booking BK-251126-JNNU\",\"booking_id\":5,\"room_id\":3,\"room_type_id\":1}', 3, '2025-11-26 08:50:48', '2025-11-26 08:50:48'),
-(32, 'booking_created', '{\"summary\":\"Created booking BK-251126-D64L\",\"booking_id\":6,\"room_id\":3,\"room_type_id\":2}', 4, '2025-11-26 09:15:03', '2025-11-26 09:15:03');
+(1, 'room_created', '{\"summary\":\"Created room Room 1\",\"room_id\":1}', 1, '2025-12-01 11:46:22', '2025-12-01 11:46:22'),
+(2, 'room_created', '{\"summary\":\"Created room 302\",\"room_id\":2}', 1, '2025-12-01 12:39:04', '2025-12-01 12:39:04'),
+(3, 'room_created', '{\"summary\":\"Created room Room 1302\",\"room_id\":4}', 1, '2025-12-01 12:39:55', '2025-12-01 12:39:55'),
+(4, 'booking_created', '{\"summary\":\"Created booking BK-251202-YROO\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":1}', 3, '2025-12-02 05:17:42', '2025-12-02 05:17:42'),
+(5, 'booking_updated', '{\"summary\":\"Updated booking BK-251202-YROO\",\"booking_id\":1,\"room_id\":1,\"room_type_id\":1}', 3, '2025-12-02 05:33:28', '2025-12-02 05:33:28'),
+(6, 'booking_created', '{\"summary\":\"Created booking BK-251202-HKF0\",\"booking_id\":2,\"room_id\":4,\"room_type_id\":1}', 3, '2025-12-02 05:35:17', '2025-12-02 05:35:17'),
+(7, 'room_type_deleted', '{\"summary\":\"Deleted room type NK3\",\"room_type_id\":3}', 1, '2025-12-02 06:22:26', '2025-12-02 06:22:26');
 
 -- --------------------------------------------------------
 
@@ -467,9 +467,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `role`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin User', 'admin@example.com', 'super_admin', NULL, '$2y$12$y9xQClgCvRf23HYjE9G3Muyn5b1KpnmVY0OIoc0vul62ZZWPzHv/6', NULL, '2025-10-30 23:33:30', '2025-11-24 12:12:04'),
-(2, 'Test User', 'user@example.com', 'admin', NULL, '$2y$12$mgQu32eg/qqUUlHgdnPS/eJPhDab2ZgcmujnTis86OhL8cDhCqUvq', NULL, '2025-10-30 23:33:31', '2025-11-24 09:30:23'),
-(3, 'Siddharth', 'siddharth.sheth@meghtechnologies.com', 'user', NULL, '$2y$12$Zrik0YiV.d6Qiwb0Ev3P8OXQa/QeLLcn8hcgihhUV39wrZUOTHpPS', NULL, '2025-10-30 23:47:59', '2025-10-30 23:47:59'),
-(4, 'Siddharth', 'siddharth@meghtechnologies.com', 'user', NULL, '$2y$12$Zrik0YiV.d6Qiwb0Ev3P8OXQa/QeLLcn8hcgihhUV39wrZUOTHpPS', NULL, '2025-10-30 23:47:59', '2025-10-30 23:47:59');
+(2, 'Test User', 'user1@example.com', 'admin', NULL, '$2y$12$mgQu32eg/qqUUlHgdnPS/eJPhDab2ZgcmujnTis86OhL8cDhCqUvq', NULL, '2025-10-30 23:33:31', '2025-11-24 09:30:23'),
+(3, 'User 2', 'user2@example.com', 'user', NULL, '$2y$12$Zrik0YiV.d6Qiwb0Ev3P8OXQa/QeLLcn8hcgihhUV39wrZUOTHpPS', NULL, '2025-10-30 23:47:59', '2025-10-30 23:47:59'),
+(4, 'User 3', 'user3@example.com', 'user', NULL, '$2y$12$Zrik0YiV.d6Qiwb0Ev3P8OXQa/QeLLcn8hcgihhUV39wrZUOTHpPS', NULL, '2025-10-30 23:47:59', '2025-10-30 23:47:59');
 
 --
 -- Indexes for dumped tables
@@ -520,6 +520,15 @@ ALTER TABLE `job_batches`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `locations_unique_id_unique` (`unique_id`),
+  ADD UNIQUE KEY `locations_name_unique` (`name`),
+  ADD UNIQUE KEY `locations_location_id_unique` (`location_id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -553,9 +562,9 @@ ALTER TABLE `permissions`
   ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
 
 --
--- Indexes for table `products`
+-- Indexes for table `product`
 --
-ALTER TABLE `products`
+ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `products_unique_id_unique` (`unique_id`),
   ADD UNIQUE KEY `products_title_unique` (`title`);
@@ -579,7 +588,9 @@ ALTER TABLE `role_has_permissions`
 --
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `rooms_room_no_unique` (`room_no`);
+  ADD UNIQUE KEY `rooms_room_no_unique` (`room_no`),
+  ADD UNIQUE KEY `rooms_location_type_no_unique` (`location_id`,`room_type_id`,`room_no`),
+  ADD KEY `rooms_room_type_id_foreign` (`room_type_id`);
 
 --
 -- Indexes for table `room_types`
@@ -618,7 +629,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -633,10 +644,16 @@ ALTER TABLE `jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -645,10 +662,10 @@ ALTER TABLE `permissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT for table `product`
 --
-ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `product`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -660,7 +677,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `room_types`
@@ -672,7 +689,7 @@ ALTER TABLE `room_types`
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -710,6 +727,13 @@ ALTER TABLE `model_has_roles`
 ALTER TABLE `role_has_permissions`
   ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `rooms`
+--
+ALTER TABLE `rooms`
+  ADD CONSTRAINT `rooms_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `rooms_room_type_id_foreign` FOREIGN KEY (`room_type_id`) REFERENCES `room_types` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `system_logs`

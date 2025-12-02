@@ -3,7 +3,7 @@
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\LocationController as AdminLocationController;
 use App\Http\Controllers\Admin\RoomController as AdminRoomController;
 use App\Http\Controllers\Admin\RoomTypeController as AdminRoomTypeController;
 use App\Http\Controllers\Admin\LogController as AdminLogController;
@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/get-room-details/{id}', [BookingController::class, 'getRoomDetails'])
     ->name('bookings.get-room-details');
+
+    Route::get('/get-room-types/{location_id}', [BookingController::class, 'getRoomTypes']);
     Route::get('bookings/available-rooms', [BookingController::class, 'getAvailableRooms'])->name('bookings.available-rooms');
     Route::resource('bookings', BookingController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
 
@@ -34,7 +36,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('users', AdminUserController::class);
         });
 
-        Route::resource('products', AdminProductController::class);
+        Route::resource('locations', AdminLocationController::class);
         Route::resource('rooms', AdminRoomController::class);
         Route::resource('room-types', AdminRoomTypeController::class);
 

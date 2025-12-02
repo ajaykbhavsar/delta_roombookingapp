@@ -8,6 +8,38 @@
                 @csrf
 
                 <div class="mb-3">
+                    <label for="location_id" class="form-label">Location <span class="text-danger">*</span></label>
+                    <select name="location_id" id="location_id"
+                            class="form-select @error('location_id') is-invalid @enderror" required>
+                        <option value="" disabled {{ old('location_id') ? '' : 'selected' }}>Select location</option>
+                        @foreach($locations as $location)
+                            <option value="{{ $location->id }}" {{ old('location_id') == $location->id ? 'selected' : '' }}>
+                                {{ $location->name }} ({{ $location->location_id }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('location_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="room_type_id" class="form-label">Room Type <span class="text-danger">*</span></label>
+                    <select name="room_type_id" id="room_type_id"
+                            class="form-select @error('room_type_id') is-invalid @enderror" required>
+                        <option value="" disabled {{ old('room_type_id') ? '' : 'selected' }}>Select room type</option>
+                        @foreach($roomTypes as $roomType)
+                            <option value="{{ $roomType->id }}" {{ old('room_type_id') == $roomType->id ? 'selected' : '' }}>
+                                {{ $roomType->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('room_type_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
                     <label for="room_no" class="form-label">Room Number <span class="text-danger">*</span></label>
                     <input type="text" name="room_no" id="room_no" value="{{ old('room_no') }}" required
                         class="form-control @error('room_no') is-invalid @enderror"
@@ -15,19 +47,8 @@
                     @error('room_no')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <small class="text-muted">Room number must be unique.</small>
+                    <small class="text-muted">Must be unique for the same Location and Room Type.</small>
                 </div>
-                <div class="mb-3">
-                    <label for="location" class="form-label">location (optional)</label>
-                    <textarea name="location" id="location" rows="3"
-                        class="form-control @error('location') is-invalid @enderror"
-                        placeholder="Enter  location">{{ old('location') }}</textarea>
-                    @error('location')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description (optional)</label>
@@ -41,18 +62,43 @@
                 <div class="mb-3">
                     <label for="room_status" class="form-label">Room Status  <span class="text-danger">*</span></label>
                     <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required>
+                        <option value="" disabled {{ old('room_status') ? '' : 'selected' }}>Select status</option>
                         @foreach($roomStatusOptions as $value => $label)
-                            <option value="{{ $value }}" >
+                            <option value="{{ $value }}" {{ old('room_status') === $value ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                         @endforeach
                     </select>
-                    @error('location')
+                    @error('room_status')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
+                <div class="mb-3">
+                    <label for="occupancy_status" class="form-label">Occupancy Status <span class="text-danger">*</span></label>
+                    <select name="occupancy_status" id="occupancy_status"
+                            class="form-select @error('occupancy_status') is-invalid @enderror" required>
+                        @foreach($occupancyStatusOptions as $value => $label)
+                            <option value="{{ $value }}" {{ old('occupancy_status', 'empty') === $value ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('occupancy_status')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
+                <div class="mb-3">
+                    <label for="base_rate" class="form-label">Base Rate (Rs) <span class="text-danger">*</span></label>
+                    <input type="number" name="base_rate" id="base_rate" min="0" step="0.01"
+                           value="{{ old('base_rate') }}"
+                           class="form-control @error('base_rate') is-invalid @enderror"
+                           placeholder="Enter per-night base rate">
+                    @error('base_rate')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="mb-3">
                     <div class="form-check">
                         <input type="checkbox" name="is_active" value="1" id="is_active"

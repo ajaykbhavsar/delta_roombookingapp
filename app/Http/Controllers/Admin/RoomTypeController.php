@@ -36,14 +36,14 @@ class RoomTypeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:room_types,name',
             'description' => 'nullable|string',
-            'base_rate' => 'required|numeric|min:0|max:999999.99',
+            // 'base_rate' => 'required|numeric|min:0|max:999999.99',
             'is_active' => 'boolean',
         ]);
 
         $roomType = RoomType::create([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
-            'base_rate' => $validated['base_rate'],
+            // 'base_rate' => $validated['base_rate'],
             'is_active' => $request->has('is_active') ? true : false,
         ]);
 
@@ -77,14 +77,14 @@ class RoomTypeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:room_types,name,' . $roomType->id,
             'description' => 'nullable|string',
-            'base_rate' => 'required|numeric|min:0|max:999999.99',
+            // 'base_rate' => 'required|numeric|min:0|max:999999.99',
             'is_active' => 'boolean',
         ]);
 
         $roomType->update([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
-            'base_rate' => $validated['base_rate'],
+            // 'base_rate' => $validated['base_rate'],
             'is_active' => $request->has('is_active') ? true : false,
         ]);
 
@@ -97,23 +97,31 @@ class RoomTypeController extends Controller
             ->with('success', 'Room type updated successfully.');
     }
 
-    public function destroy(RoomType $roomType)
-    {
-        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
-            abort(403, 'Unauthorized');
-        }
-        $typeName = $roomType->name;
-        $typeId = $roomType->id;
 
-        $roomType->delete();
-
-        SystemLog::record('room_type_deleted', [
-            'summary' => "Deleted room type {$typeName}",
-            'room_type_id' => $typeId,
-        ]);
-
-        return redirect()->route('admin.room-types.index')
-            ->with('success', 'Room type deleted successfully.');
+public function destroy(RoomType $roomType)
+{
+    if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+        abort(403, 'Unauthorized');
     }
+
+    // Check if room type is used in rooms
+    if ($roomType->rooms()->exists()) {
+        return redirect()->route('admin.room-types.index')
+            ->with('error', 'Cannot delete room type. It is currently in use by rooms.');
+    }
+
+    $typeName = $roomType->name;
+    $typeId = $roomType->id;
+
+    $roomType->delete();
+
+    SystemLog::record('room_type_deleted', [
+        'summary' => "Deleted room type {$typeName}",
+        'room_type_id' => $typeId,
+    ]);
+
+    return redirect()->route('admin.room-types.index')
+        ->with('success', 'Room type deleted successfully.');
+}
 }
 

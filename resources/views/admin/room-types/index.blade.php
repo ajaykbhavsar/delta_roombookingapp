@@ -27,7 +27,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
-                                <th>Base Rate</th>
+                                <!-- <th>Base Rate</th> -->
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
@@ -38,7 +38,7 @@
                                 <tr>
                                     <td><strong>{{ $roomType->name }}</strong></td>
                                     <td>{{ $roomType->description ?? '—' }}</td>
-                                    <td>INR {{ number_format($roomType->base_rate, 2) }}</td>
+                                    <!-- <td>INR {{ number_format($roomType->base_rate, 2) }}</td> -->
                                     <td>
                                         @if($roomType->is_active)
                                             <span class="badge bg-success">Active</span>

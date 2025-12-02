@@ -13,6 +13,7 @@ class Booking extends Model
     use HasFactory;
 
     public const ID_PROOF_TYPES = [
+        ''=>'Select Proof Type',
         'aadhar' => 'Aadhar',
         'passport' => 'Passport',
         'driving_license' => 'Driving License',
@@ -20,13 +21,14 @@ class Booking extends Model
     ];
 
     public const ROOM_STATUS_OPTIONS = [
-        ''=>'Select',
+        ''=>'Select Room Status',
         'dirty' => 'Dirty',
         'clean' => 'Clean',
         'needs_maintenance' => 'Needs Maintenance',
     ];
 
     public const OCCUPANCY_STATUS_OPTIONS = [
+        ''=>'Select Occupancy Status',
         'empty' => 'Empty',
         'occupied' => 'Occupied',
         'reserved' => 'Reserved',
@@ -34,12 +36,14 @@ class Booking extends Model
     ];
 
     public const BOOKING_TYPE_OPTIONS = [
+        ''=>'Select Booking Type',
         'daily' => 'Daily',
         'weekly' => 'Weekly',
         'monthly' => 'Monthly',
     ];
 
     public const PAYMENT_TYPE_OPTIONS = [
+        ''=>'Select Payment Type',
         'cash' => 'Cash',
         'card' => 'Card',
         'upi' => 'UPI',
@@ -48,12 +52,14 @@ class Booking extends Model
     ];
 
     public const PAYMENT_STATUS_OPTIONS = [
+        ''=>'Select Payment Status',
         'paid' => 'Paid',
         'pending' => 'Pending',
         'partially_paid' => 'Partially Paid',
     ];
 
     public const BOOKING_STATUS_OPTIONS = [
+        ''=>'Select Booking Status',
         'confirmed' => 'Confirmed',
         'pending' => 'Pending',
         'cancelled' => 'Cancelled',
@@ -122,6 +128,7 @@ class Booking extends Model
         return $this->belongsTo(RoomType::class);
     }
 
+   
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
