@@ -26,9 +26,14 @@
                         </x-nav-link>
                     @endif
 
-                    @can('viewAny', \App\Models\Product::class)
-                        <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
-                            {{ __('Manage Products') }}
+                    @can('viewAny', \App\Models\Location::class)
+                        <x-nav-link :href="route('admin.locations.index')" :active="request()->routeIs('admin.locations.*')">
+                            {{ __('Manage Locations') }}
+                        </x-nav-link>
+                    @endcan
+                       @can('viewAny', \App\Models\RoomType::class)
+                        <x-nav-link :href="route('admin.room-types.index')" :active="request()->routeIs('admin.room-types.*')">
+                            {{ __('Manage Room Types') }}
                         </x-nav-link>
                     @endcan
                     @can('viewAny', \App\Models\Room::class)
@@ -36,11 +41,7 @@
                             {{ __('Manage Rooms') }}
                         </x-nav-link>
                     @endcan
-                    @can('viewAny', \App\Models\RoomType::class)
-                        <x-nav-link :href="route('admin.room-types.index')" :active="request()->routeIs('admin.room-types.*')">
-                            {{ __('Manage Room Types') }}
-                        </x-nav-link>
-                    @endcan
+                 
                 </div>
             </div>
 
@@ -107,9 +108,14 @@
                 </x-responsive-nav-link>
             @endif
 
-            @can('viewAny', \App\Models\Product::class)
-                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
-                    {{ __('Manage Products') }}
+            @can('viewAny', \App\Models\Location::class)
+                <x-responsive-nav-link :href="route('admin.locations.index')" :active="request()->routeIs('admin.locations.*')">
+                    {{ __('Manage Locations') }}
+                </x-responsive-nav-link>
+            @endcan
+              @can('viewAny', \App\Models\RoomType::class)
+                <x-responsive-nav-link :href="route('admin.room-types.index')" :active="request()->routeIs('admin.room-types.*')">
+                    {{ __('Manage Room Types') }}
                 </x-responsive-nav-link>
             @endcan
             @can('viewAny', \App\Models\Room::class)
@@ -117,11 +123,7 @@
                     {{ __('Manage Rooms') }}
                 </x-responsive-nav-link>
             @endcan
-            @can('viewAny', \App\Models\RoomType::class)
-                <x-responsive-nav-link :href="route('admin.room-types.index')" :active="request()->routeIs('admin.room-types.*')">
-                    {{ __('Manage Room Types') }}
-                </x-responsive-nav-link>
-            @endcan
+          
         </div>
 
         <!-- Responsive Settings Options -->

@@ -2,14 +2,14 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">System Logs</h4>
-            <span class="text-muted small">Tracking changes across Users & Products</span>
+            <span class="text-muted small">Tracking changes across Users & Locations</span>
         </div>
         <div class="card-body">
             @if($logs->isEmpty())
                 <div class="text-center py-5">
                     <i class="fa-solid fa-clipboard-list fa-3x text-muted mb-3"></i>
                     <h5 class="mb-2">No log entries yet</h5>
-                    <p class="text-muted mb-0">Once changes are made to users or products, they will appear here.</p>
+                    <p class="text-muted mb-0">Once changes are made to users or locations, they will appear here.</p>
                 </div>
             @else
                 <div class="table-responsive">

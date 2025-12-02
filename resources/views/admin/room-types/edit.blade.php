@@ -28,7 +28,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="base_rate" class="form-label">Base Rate (INR) <span class="text-danger">*</span></label>
                     <input type="number" step="0.01" min="0" name="base_rate" id="base_rate"
                            value="{{ old('base_rate', $roomType->base_rate) }}"
@@ -37,7 +37,7 @@
                     @error('base_rate')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> -->
 
                 <div class="mb-3">
                     <div class="form-check">

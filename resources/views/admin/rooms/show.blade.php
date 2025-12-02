@@ -21,9 +21,20 @@
                 </div>
             </div>
             <div class="row mb-4">
-                <div class="col-md-12">
-                    <label class="text-muted small">location</label>
-                    <p class="mb-0">{{ $room->location ?? '—' }}</p>
+                <div class="col-md-6">
+                    <label class="text-muted small">Location</label>
+                    <p class="mb-0">
+                        @if($room->location)
+                            <strong>{{ $room->location->name }}</strong>
+                            <span class="text-muted">(ID: {{ $room->location->location_id }})</span>
+                        @else
+                            —
+                        @endif
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-muted small">Room Type</label>
+                    <p class="mb-0">{{ $room->roomType->name ?? '—' }}</p>
                 </div>
             </div>
 
@@ -35,10 +46,22 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-12">
-                    <label class="text-muted small">Room Status</label>
+                <div class="col-md-6">
+                    <label class="text-muted small">Housekeeping Status</label>
                     <p class="mb-0">{{ $room->room_status ?? '—' }}</p>
                 </div>
+                <div class="col-md-6">
+                    <label class="text-muted small">Occupancy Status</label>
+                    <p class="mb-0">{{ \App\Models\Booking::OCCUPANCY_STATUS_OPTIONS[$room->occupancy_status] ?? \Illuminate\Support\Str::headline($room->occupancy_status) }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="text-muted small">Base Rate</label>
+                    <p class="mb-0">Rs {{ number_format($room->base_rate, 2) }}</p>
+                </div>
+
             </div>
 
             <div class="row mb-4">

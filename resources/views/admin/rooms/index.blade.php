@@ -26,7 +26,10 @@
                         <thead>
                             <tr>
                                 <th>Room No.</th>
-                                <th>Description</th>
+                                <th>Location</th>
+                                <th>Room Type</th>
+                                <th>Base Rate</th>
+                                <th>Occupancy</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
@@ -36,7 +39,19 @@
                             @foreach ($rooms as $room)
                                 <tr>
                                     <td><strong>{{ $room->room_no }}</strong></td>
-                                    <td>{{ $room->description ?? '—' }}</td>
+                                    <td>
+                                        @if($room->location)
+                                            <strong>{{ $room->location->name }}</strong>
+                                            <span class="text-muted d-block small">{{ $room->location->location_id }}</span>
+                                        @else
+                                            —
+                                        @endif
+                                    </td>
+                                    <td>{{ $room->roomType->name ?? '—' }}</td>
+                                    <td>Rs {{ number_format($room->base_rate, 2) }}</td>
+                                    <td>
+                                        {{ \App\Models\Booking::OCCUPANCY_STATUS_OPTIONS[$room->occupancy_status] ?? \Illuminate\Support\Str::headline($room->occupancy_status) }}
+                                    </td>
                                     <td>
                                         @if($room->is_active)
                                             <span class="badge bg-success">Active</span>
@@ -75,6 +90,7 @@
         </div>
     </div>
 </x-sneat-admin-layout>
+
 
 
 

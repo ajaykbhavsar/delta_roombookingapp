@@ -10,18 +10,22 @@ class RoomType extends Model
     protected $fillable = [
         'name',
         'description',
-        'base_rate',
+        // 'base_rate',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'base_rate' => 'decimal:2',
+        // 'base_rate' => 'decimal:2',
     ];
 
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+      public function rooms()
+    {
+        return $this->hasMany(Room::class, 'room_type_id');
     }
 }
 

@@ -82,18 +82,28 @@
 
             <h5 class="mb-3">Room Information</h5>
             <div class="row mb-4">
-                <div class="col-md-4">
-                    <label class="text-muted small">Room Number</label>
-                    <p class="mb-0">{{ $booking->room->room_no ?? '—' }}</p>
-                </div>
-                <div class="col-md-4">
+
+             <div class="col-md-4">
+    <label class="text-muted small">Location</label>
+    <p class="mb-0">
+    
+    @php
+    $location_name= App\Models\Location::where('id', $booking->location)->value('name');
+    @endphp
+    
+    
+    {{ $location_name ?? '—' }}</p>
+</div>
+                 <div class="col-md-4">
                     <label class="text-muted small">Room Type</label>
                     <p class="mb-0">{{ $booking->roomType->name ?? '—' }}</p>
                 </div>
                 <div class="col-md-4">
-                    <label class="text-muted small">Location</label>
-                    <p class="mb-0">{{ $locationOptions[$booking->location] ?? \Illuminate\Support\Str::headline($booking->location) }}</p>
+                    <label class="text-muted small">Room Number</label>
+                    <p class="mb-0">{{ $booking->room->room_no ?? '—' }}</p>
                 </div>
+               
+              
                 <div class="col-md-4 mt-3">
                     <label class="text-muted small">Room Status</label>
                     <p class="mb-0">{{ $roomStatusOptions[$booking->room_status] ?? \Illuminate\Support\Str::headline($booking->room_status) }}</p>

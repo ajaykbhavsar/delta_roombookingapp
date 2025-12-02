@@ -83,7 +83,7 @@
                     <label for="check_in_to" class="form-label">Check-in To</label>
                     <input type="date" name="check_in_to" id="check_in_to" value="{{ $filters['check_in_to'] ?? '' }}" class="form-control">
                 </div>
-                <div class="col-md-3 d-flex gap-2">
+                <div class="col-md-2 d-flex gap-2">
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="fa-solid fa-filter me-2"></i>Apply
                     </button>
