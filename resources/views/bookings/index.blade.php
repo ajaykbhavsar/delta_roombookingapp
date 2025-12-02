@@ -84,10 +84,10 @@
                     <input type="date" name="check_in_to" id="check_in_to" value="{{ $filters['check_in_to'] ?? '' }}" class="form-control">
                 </div>
                 <div class="col-md-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100 btnone">
                         <i class="fa-solid fa-filter me-2"></i>Apply
                     </button>
-                    <a href="{{ route('bookings.index') }}" class="btn btn-outline-secondary w-100">
+                    <a href="{{ route('bookings.index') }}" class="btnone btn btn-outline-secondary w-100">
                         Reset
                     </a>
                 </div>
@@ -166,7 +166,8 @@
                                     <td>
                                         <span class="badge {{ $bookingBadge }}">{{ \Illuminate\Support\Str::headline($booking->booking_status) }}</span>
                                     </td>
-                                    <td class="d-flex gap-2">
+                                    <td class="d-flex gap-2" style="min-height:80px;">
+                                        <div>
                                         <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
@@ -175,6 +176,7 @@
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
                                         @endcan
+                                </div>
                                     </td>
                                 </tr>
                             @endforeach

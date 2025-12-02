@@ -20,16 +20,17 @@
 
         <style>
             :root {
-                --auth-primary: #1f8c82;
+                --auth-primary: #0BACE1;
                 --auth-secondary: #0f172a;
-                --auth-gradient: linear-gradient(135deg, #1f8c82 0%, #0f766e 55%, #0b4f56 100%);
+                --auth-gradient: linear-gradient(135deg, #0BACE1 0%, #0077CC 55%, #004A80 100%);
                 --auth-surface: #f8fafc;
                 --auth-card-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
             }
 
             body {
                 font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-                background: radial-gradient(circle at top left, rgba(31, 140, 130, 0.22), transparent 55%), linear-gradient(180deg, #e2f1ef 0%, #eef6f4 45%, #f8fafc 100%);
+               background: radial-gradient(circle at top left, rgba(11, 172, 225, 0.22), transparent 55%),
+            linear-gradient(180deg, #e4f6ff 0%, #eff9ff 45%, #f8fbff 100%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -117,11 +118,11 @@
                 font-weight: 600;
                 padding: 0.8rem 1.25rem;
                 border-radius: 0.85rem;
-                box-shadow: 0 12px 24px rgba(31, 140, 130, 0.35);
+               box-shadow: 0 12px 24px rgba(11, 172, 225, 0.35);
             }
 
             .btn-primary:hover {
-                background: linear-gradient(135deg, #1b776f, #0a4e54);
+              background: linear-gradient(135deg, #3BC9F5, #0B88C4);
             }
 
             a {

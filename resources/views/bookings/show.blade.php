@@ -52,7 +52,8 @@
             </div>
 
             <hr>
-            <h5 class="mb-3">Guest Information</h5>
+            <div class="cntbox">
+            <h3 class="mb-3">Guest Information</h3>
             <div class="row mb-4">
                 <div class="col-md-4">
                     <label class="text-muted small">Guest Name</label>
@@ -79,7 +80,8 @@
                     <p class="mb-0">{{ $booking->address }}</p>
                 </div>
             </div>
-
+            </div>
+ <div class="cntbox">
             <h5 class="mb-3">Room Information</h5>
             <div class="row mb-4">
 
@@ -121,7 +123,8 @@
                     <p class="mb-0">{{ $booking->additional_description ?? '—' }}</p>
                 </div>
             </div>
-
+            </div>
+ <div class="cntbox">
             <h5 class="mb-3">Stay Details</h5>
             <div class="row mb-4">
                 <div class="col-md-4">
@@ -145,7 +148,8 @@
                     <p class="mb-0">{{ $booking->is_repeat_customer ? 'Yes' : 'No' }}</p>
                 </div>
             </div>
-
+</div>
+ <div class="cntbox">
             <h5 class="mb-3">Payment &amp; Charges</h5>
             <div class="row mb-4">
                 <div class="col-md-3">
@@ -169,9 +173,12 @@
                     <p class="mb-0">{{ $booking->payment_details ?? '—' }}</p>
                 </div>
             </div>
+</div>
+            <div class="cntbox">
 
             <h5 class="mb-3">Notes</h5>
             <p class="mb-0">{{ $booking->notes ?? '—' }}</p>
+            </div>
         </div>
     </div>
 </x-sneat-admin-layout>

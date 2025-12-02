@@ -37,8 +37,8 @@
                         <tbody>
                             @foreach ($locations as $location)
                                 <tr>
-                                    <td><code>{{ $location->unique_id }}</code></td>
-                                    <td><code>{{ $location->location_id ?? '—' }}</code></td>
+                                    <td>{{ $location->unique_id }}</td>
+                                    <td>{{ $location->location_id ?? '—' }}</td>
                                     <td><strong>{{ $location->name }}</strong></td>
                                     <td>
                                         @if($location->is_active)

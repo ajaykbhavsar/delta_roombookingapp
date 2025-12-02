@@ -14,7 +14,7 @@
         @csrf
         @method('patch')
 
-        <div class="mb-3">
+        <div class="mb-3 maxw-400">
             <label for="name" class="form-label">Name</label>
             <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror"
                    value="{{ old('name', $user->name) }}" required autofocus autocomplete="name">
@@ -23,7 +23,7 @@
             @enderror
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 maxw-400">
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror"
                    value="{{ old('email', $user->email) }}" required autocomplete="username">

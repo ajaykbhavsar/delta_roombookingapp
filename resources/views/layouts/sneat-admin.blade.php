@@ -29,10 +29,10 @@
 
         <style>
             :root {
-                --bs-primary: #1f8c82;
+                --bs-primary: #0BACE1;
                 --bs-primary-rgb: 31, 140, 130;
                 --bs-secondary: #475569;
-                --bs-success: #22c55e;
+                --bs-success: #0BACE1;
                 --bs-info: #0ea5e9;
                 --bs-warning: #f59e0b;
                 --bs-danger: #ef4444;
@@ -40,7 +40,7 @@
                 --bs-dark: #0f172a;
                 --booking-surface: #eef6f4;
                 --booking-deep: #0a2e36;
-                --booking-gradient: linear-gradient(135deg, #1f8c82 0%, #0f766e 55%, #0b4f56 100%);
+               --booking-gradient: linear-gradient(135deg, #0BACE1 0%, #0898CB 55%, #06749D 100%);
                 --booking-card-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
             }
 
@@ -144,12 +144,18 @@
             }
 
             #layout-navbar {
-                position: fixed;
-                top: 0;
-                left: 260px;
-                right: 0;
-                z-index: 1029;
-                height: 70px;
+                    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
+    z-index: 1029;
+    height: 70px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 0px solid;
+    background: #ffffff;
             }
 
             .layout-page {
@@ -161,12 +167,14 @@
             .content-wrapper {
                 padding: 1.5rem;
             }
-
+ .navbar-nav-right{
+                position:fixed; right:290px;
+            }
             .card {
                 background: #ffffff;
                 border: 0;
                 box-shadow: var(--booking-card-shadow);
-                border-radius: 0.85rem;
+                border-radius: 0.45rem;
                 margin-bottom: 1.5rem;
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
@@ -177,14 +185,14 @@
             }
 
             .card-header {
-                padding: 1.25rem 1.5rem;
+                padding: 1.0rem 1.5rem;
                 border-bottom: 1px solid rgba(15, 23, 42, 0.08);
                 background: linear-gradient(90deg, rgba(31, 140, 130, 0.12), rgba(15, 118, 110, 0.02));
             }
 
             .card-header .card-title {
                 color: #0f172a;
-                font-weight: 600;
+                font-weight: 600; font-size:20px;
                 letter-spacing: 0.01em;
             }
 
@@ -350,7 +358,7 @@
             .text-bg-primary,
             .bg-success,
             .text-bg-success {
-                background: var(--booking-gradient) !important;
+                background: #3dc4f7 !important;
                 color: #ffffff !important;
             }
 
@@ -359,6 +367,41 @@
                 background: rgba(31, 140, 130, 0.25);
                 color: var(--bs-primary);
             }
+             .card-header{
+                    background: #3ecbff!important;
+            }
+            .navbar-nav-right .bg-label-primary {
+                background-color: rgba(31, 140, 130, 0.15);
+                color: var(--bs-primary);
+                width: 40px!important;
+                height: 40px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .btnone{
+                display: flex; flex-direction: row; justify-content: center; align-items: center;
+
+            }
+            .form-label{font-size:14px}
+            .form-control{
+                border: var(--bs-border-width) solid var(--bs-border-color);
+                border-radius: var(--bs-border-radius);               
+                padding: .375rem 2.25rem .375rem .75rem;
+            }
+            table tr td div, table tr td{font-size:14px}
+            .card-body{    padding: 1.0rem;}
+            .bg-primary, .text-bg-primary, .bg-success, .text-bg-success {
+    background: #1fa0d1 !important;
+    color: #ffffff !important;
+}
+.cntbox{
+    border: 1px solid rgba(15, 23, 42, 0.08); padding:15px; border-radius:8px; margin:10px 0px;
+
+}
+.cntbox h3, .cntbox h5{ font-size:17px; font-weight:bold; margin-bottom:15px; border-bottom:1px solid #ddd; padding-bottom:12px;}
+.maxw-400{max-width:400px;}
         </style>
     </head>
     <body>

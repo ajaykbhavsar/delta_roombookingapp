@@ -8,7 +8,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-3">
+                <div class="mb-3 maxw-400">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
                         class="form-control @error('name') is-invalid @enderror">
@@ -17,7 +17,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 maxw-400">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
                         class="form-control @error('email') is-invalid @enderror">
@@ -26,7 +26,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 maxw-400">
                     <label for="password" class="form-label">Password (leave blank to keep current password)</label>
                     <input type="password" name="password" id="password"
                         class="form-control @error('password') is-invalid @enderror">
@@ -35,13 +35,13 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 maxw-400">
                     <label for="password_confirmation" class="form-label">Confirm Password</label>
                     <input type="password" name="password_confirmation" id="password_confirmation"
                         class="form-control">
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 maxw-400">
                     <label for="role" class="form-label">Role</label>
                     <select name="role" id="role" required
                         class="form-select @error('role') is-invalid @enderror">

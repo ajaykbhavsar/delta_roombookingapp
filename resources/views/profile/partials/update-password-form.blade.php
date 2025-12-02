@@ -10,7 +10,7 @@
         @csrf
         @method('put')
 
-        <div class="mb-3">
+        <div class="mb-3 maxw-400">
             <label for="update_password_current_password" class="form-label">Current Password</label>
             <input type="password" id="update_password_current_password" name="current_password"
                    class="form-control {{ $errors->updatePassword->has('current_password') ? 'is-invalid' : '' }}"
@@ -20,7 +20,7 @@
             @endif
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 maxw-400">
             <label for="update_password_password" class="form-label">New Password</label>
             <input type="password" id="update_password_password" name="password"
                    class="form-control {{ $errors->updatePassword->has('password') ? 'is-invalid' : '' }}"
@@ -30,7 +30,7 @@
             @endif
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 maxw-400">
             <label for="update_password_password_confirmation" class="form-label">Confirm Password</label>
             <input type="password" id="update_password_password_confirmation" name="password_confirmation"
                    class="form-control" autocomplete="new-password">
