@@ -110,10 +110,7 @@
                     <label class="text-muted small">Room Status</label>
                     <p class="mb-0">{{ $roomStatusOptions[$booking->room_status] ?? \Illuminate\Support\Str::headline($booking->room_status) }}</p>
                 </div>
-                <div class="col-md-4 mt-3">
-                    <label class="text-muted small">Room Location</label>
-                    <p class="mb-0">{{ $roomStatusOptions[$booking->room_location] ?? \Illuminate\Support\Str::headline($booking->room_location) }}</p>
-                </div>
+                
                 <div class="col-md-4 mt-3">
                     <label class="text-muted small">Occupancy Status</label>
                     <p class="mb-0">{{ $occupancyStatusOptions[$booking->occupancy_status] ?? \Illuminate\Support\Str::headline($booking->occupancy_status) }}</p>

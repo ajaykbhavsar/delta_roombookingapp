@@ -237,7 +237,7 @@
 
                 <div class="col-md-4">
                     <label for="room_status" class="form-label">Room Status <span class="text-danger">*</span></label>
-                    <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required readonly>
+                    <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required readonly style="pointer-events: none !important;">
                         @foreach($roomStatusOptions as $value => $label)
                             <option value="{{ $value }}" {{ old('room_status', $isEdit ? $booking->room_status : '') === $value ? 'selected' : '' }}>
                                 {{ $label }}
@@ -250,7 +250,7 @@
                 </div>
 
 
-                <div class="col-md-8">
+                <div class="col-md-8" style="display: none;">
                 <label for="room_location" class="form-label">Room Location <span class="text-danger">*</span></label>
                 <textarea name="room_location" id="room_location"
                 class="form-control @error('room_location') is-invalid @enderror"
@@ -264,7 +264,7 @@
                 <div class="col-md-4">
                     <label for="occupancy_status" class="form-label">Occupancy Status <span class="text-danger">*</span></label>
                     <select name="occupancy_status" id="occupancy_status"
-                            class="form-select @error('occupancy_status') is-invalid @enderror" required readonly>
+                            class="form-select @error('occupancy_status') is-invalid @enderror" required readonly  style="pointer-events: none !important;">
                         @foreach($occupancyStatusOptions as $value => $label)
                             <option value="{{ $value }}" {{ old('occupancy_status', $isEdit ? $booking->occupancy_status : '') === $value ? 'selected' : '' }}>
                                 {{ $label }}
@@ -398,6 +398,7 @@
                             </option>
                         @endforeach
                     </select>
+                    <input type="hidden" name="booking_status_change" id="booking_status_change" value="0">
                     @error('booking_status')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -846,6 +847,14 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
                 })
                 .then(data => {
                     const list = Array.isArray(data) ? data : (data.room_types || []);
+                                if (!list.length) {
+            const opt = document.createElement('option');
+            opt.value = "";
+            opt.disabled = true;
+            opt.textContent = "No room types available";
+            roomTypeSelect.appendChild(opt);
+            return;
+            }
                     list.forEach(item => {
                         const opt = document.createElement('option');
                         opt.value = item.room_type_id ?? item.id ?? '';
@@ -897,6 +906,8 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
                 const list = Array.isArray(data) ? data : (data.room_types || []);
                 
                 roomTypeSelect.innerHTML = '<option value="">Select Type</option>';
+
+
                 list.forEach(item => {
                     const opt = document.createElement('option');
                     opt.value = item.room_type_id ?? item.id ?? '';
@@ -930,6 +941,14 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
                 const rooms = Array.isArray(data.rooms) ? data.rooms : (data || []);
 
                 roomSelect.innerHTML = '<option value="">Select Room</option>';
+                if (!rooms.length) {
+    const opt = document.createElement('option');
+    opt.value = "";
+    opt.disabled = true;
+    opt.textContent = "No rooms available";
+    roomSelect.appendChild(opt);
+    return;
+}
                 rooms.forEach(room => {
                     const option = document.createElement('option');
                     option.value = room.id;
@@ -1067,6 +1086,21 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
         });
     }
 })();
+
+const bookingStatus = document.getElementById('booking_status');
+
+if (bookingStatus) {
+    bookingStatus.addEventListener('change', booking_status_change);
+}
+
+function booking_status_change() {
+    
+
+    // Example: clear some fields
+    document.getElementById('booking_status_change').value = '1';
+  
+}
+
 </script>
 
 

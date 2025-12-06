@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
+use App\Mail\BookingStatusMail;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\RoomType;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -140,6 +142,10 @@ class BookingController extends Controller
             'room_type_id' => $roomType->id,
         ]);
 
+       $booking_status= $payload['booking_status'];
+        // Send pending booking email
+        $this->sendBookingStatusEmail($booking, $booking_status);
+
         return redirect()
             ->route('bookings.show', $booking)
             ->with('success', 'Room booking created successfully.');
@@ -170,6 +176,26 @@ class BookingController extends Controller
         })->values(),
     ]);
 }
+
+public function getRooms(Request $request)
+{
+    $roomTypeId = $request->input('room_type_id');
+
+    if (!$roomTypeId) {
+        return response()->json(['rooms' => []]);
+    }
+
+    // Fetch rooms ONLY by room_type_id
+    $rooms = Room::where('room_type_id', $roomTypeId)
+        ->where('is_active', 1)  // optional: only active rooms
+        ->select('id', 'room_no')
+        ->get();
+
+    return response()->json([
+        'rooms' => $rooms
+    ]);
+}
+
 
     public function edit(Booking $booking)
     {
@@ -234,9 +260,139 @@ class BookingController extends Controller
             'room_type_id' => $roomType->id,
         ]);
 
+           if($request->input('booking_status_change') != '1'){
+            return redirect()
+            ->route('bookings.show', $booking)
+            ->with('success', 'Room booking updated successfully.');
+           }else{
+             $booking_status= $payload['booking_status'];
+        // Send pending booking email
+        $this->sendBookingStatusEmail($booking, $booking_status);
         return redirect()
             ->route('bookings.show', $booking)
             ->with('success', 'Room booking updated successfully.');
+           }
+
+
+        
+    }
+
+    /**
+     * Send booking status email
+     */
+    protected function sendBookingStatusEmail(Booking $booking, string $status): void
+    {
+        try {
+            Mail::to($booking->email)->send(new BookingStatusMail($booking, $status));
+        } catch (\Exception $e) {
+            \Log::error("Failed to send booking email: {$e->getMessage()}", [
+                'booking_id' => $booking->id,
+                'status' => $status,
+            ]);
+        }
+    }
+
+    /**
+     * Update booking status and send email
+     */
+    public function updateBookingStatus(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'booking_status' => 'required|in:pending,confirmed,checked_in,checkout,checked_out,cancelled',
+        ]);
+
+        $oldStatus = $booking->booking_status;
+        $newStatus = $request->input('booking_status');
+
+        $booking->update(['booking_status' => $newStatus]);
+
+        SystemLog::record('booking_status_updated', [
+            'summary' => "Updated booking {$booking->reference_no} from {$oldStatus} to {$newStatus}",
+            'booking_id' => $booking->id,
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus,
+        ]);
+
+        // Send status email
+        $this->sendBookingStatusEmail($booking, $newStatus);
+
+        return redirect()
+            ->route('bookings.show', $booking)
+            ->with('success', "Booking status updated to {$newStatus} and email sent.");
+    }
+
+    /**
+     * Confirm booking
+     */
+    public function confirmBooking(Booking $booking)
+    {
+        $booking->update(['booking_status' => 'confirmed']);
+
+        SystemLog::record('booking_confirmed', [
+            'summary' => "Confirmed booking {$booking->reference_no}",
+            'booking_id' => $booking->id,
+        ]);
+
+        $this->sendBookingStatusEmail($booking, 'confirmed');
+
+        return redirect()
+            ->route('bookings.show', $booking)
+            ->with('success', 'Booking confirmed and confirmation email sent.');
+    }
+
+    /**
+     * Check-in booking
+     */
+    public function checkInBooking(Booking $booking)
+    {
+        $booking->update(['booking_status' => 'checked_in']);
+
+        SystemLog::record('booking_checked_in', [
+            'summary' => "Checked in booking {$booking->reference_no}",
+            'booking_id' => $booking->id,
+        ]);
+
+        $this->sendBookingStatusEmail($booking, 'checked_in');
+
+        return redirect()
+            ->route('bookings.show', $booking)
+            ->with('success', 'Guest checked in and welcome email sent.');
+    }
+
+    /**
+     * Send checkout reminder
+     */
+    public function sendCheckoutReminder(Booking $booking)
+    {
+        $this->sendBookingStatusEmail($booking, 'checkout');
+
+        SystemLog::record('checkout_reminder_sent', [
+            'summary' => "Sent checkout reminder for booking {$booking->reference_no}",
+            'booking_id' => $booking->id,
+        ]);
+
+        return redirect()
+            ->route('bookings.show', $booking)
+            ->with('success', 'Checkout reminder email sent.');
+    }
+
+    /**
+     * Check-out booking
+     */
+    public function checkOutBooking(Booking $booking)
+    {
+        $booking->update(['booking_status' => 'checked_out']);
+
+        SystemLog::record('booking_checked_out', [
+            'summary' => "Checked out booking {$booking->reference_no}",
+            'booking_id' => $booking->id,
+        ]);
+
+        $this->sendBookingStatusEmail($booking, 'checked_out');
+
+        return redirect()
+            ->route('bookings.show', $booking)
+            ->with('success', 'Guest checked out and thank you email sent.');
     }
 
     protected function formOptions(): array

@@ -189,6 +189,76 @@
             @endif
         </div>
     </div>
+      <script>
+(() => {
+
+    const roomTypeSelect = document.getElementById('room_type_id');
+    const roomSelect = document.getElementById('room_id');
+
+    if (!roomTypeSelect || !roomSelect) return;
+
+    let updateTimeout = null;
+
+    const debouncedUpdateRooms = () => {
+        if (updateTimeout) clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(updateAvailableRooms, 400);
+    };
+
+    // Fetch rooms based on selected room type
+    const updateAvailableRooms = async () => {
+        const roomTypeId = roomTypeSelect.value;
+
+        if (!roomTypeId) {
+            roomSelect.innerHTML = `<option value="">Select Room</option>`;
+            return;
+        }
+
+        try {
+            const excludeBookingId = roomSelect.dataset.excludeBookingId || null;
+            const url = new URL('{{ route("bookings.get-rooms") }}', window.location.origin);
+
+            url.searchParams.append('room_type_id', roomTypeId);
+
+            if (excludeBookingId) {
+                url.searchParams.append('exclude_booking_id', excludeBookingId);
+            }
+
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin'
+            });
+
+            if (!response.ok) throw new Error("Failed to load rooms");
+
+            const data = await response.json();
+            const rooms = Array.isArray(data.rooms) ? data.rooms : [];
+
+            const selectedRoom = roomSelect.value; // keep previous selection
+
+            roomSelect.innerHTML = `<option value="">Select Room</option>`;
+
+            rooms.forEach(room => {
+                const opt = document.createElement('option');
+                opt.value = room.id;
+                opt.textContent = room.room_no ?? room.name ?? `Room ${room.id}`;
+
+                if (String(room.id) === String(selectedRoom)) {
+                    opt.selected = true;
+                }
+
+                roomSelect.appendChild(opt);
+            });
+
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    // Event listener
+    roomTypeSelect.addEventListener('change', debouncedUpdateRooms);
+
+})();
+</script>
 </x-sneat-admin-layout>
 
 

@@ -60,7 +60,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="room_status" class="form-label">Room Status  <span class="text-danger">*</span></label>
+                    <label for="room_status" class="form-label">Housekeeping Status <span class="text-danger">*</span></label>
                     <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required>
                         <option value="" disabled {{ old('room_status') ? '' : 'selected' }}>Select status</option>
                         @foreach($roomStatusOptions as $value => $label)

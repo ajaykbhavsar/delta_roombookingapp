@@ -24,6 +24,7 @@ class Booking extends Model
         ''=>'Select Room Status',
         'dirty' => 'Dirty',
         'clean' => 'Clean',
+
         'needs_maintenance' => 'Needs Maintenance',
     ];
 
@@ -31,6 +32,7 @@ class Booking extends Model
         ''=>'Select Occupancy Status',
         'empty' => 'Empty',
         'occupied' => 'Occupied',
+         'vacant'=>'Vacant',
         'reserved' => 'Reserved',
         'under_maintenance' => 'Under Maintenance',
     ];

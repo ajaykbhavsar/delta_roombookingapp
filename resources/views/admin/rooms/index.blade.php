@@ -30,6 +30,7 @@
                                 <th>Room Type</th>
                                 <th>Base Rate</th>
                                 <th>Occupancy</th>
+                                <th>Housekeeping Status</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
@@ -52,6 +53,7 @@
                                     <td>
                                         {{ \App\Models\Booking::OCCUPANCY_STATUS_OPTIONS[$room->occupancy_status] ?? \Illuminate\Support\Str::headline($room->occupancy_status) }}
                                     </td>
+                                     <td>{{ $room->room_status ?? '—' }}</td>
                                     <td>
                                         @if($room->is_active)
                                             <span class="badge bg-success">Active</span>

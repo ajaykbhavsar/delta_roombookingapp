@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/get-room-types/{location_id}', [BookingController::class, 'getRoomTypes']);
     Route::get('bookings/available-rooms', [BookingController::class, 'getAvailableRooms'])->name('bookings.available-rooms');
+    Route::get('bookings/get-rooms', [BookingController::class, 'getRooms'])->name('bookings.get-rooms');
     Route::resource('bookings', BookingController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
 
     Route::prefix('admin')->name('admin.')->group(function () {
