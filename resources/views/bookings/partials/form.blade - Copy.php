@@ -4,18 +4,24 @@
     $formAction = $isEdit ? route('bookings.update', $booking) : route('bookings.store');
     $defaultRoomTypeId = old('room_type_id', $isEdit ? $booking->room_type_id : ($roomTypes->first()->id ?? null));
 
-    $roomRateValue = old('room_rate');
-    $hasPresetRoomRate = true;
+   $roomRateValue = old('room_rate');
 
-    if ($roomRateValue === null) {
-        if ($isEdit && $booking->room_rate !== null) {
-            $roomRateValue = $booking->room_rate;
-            $hasPresetRoomRate = true;
-        } else {
-            $roomRateValue = $booking->room_rate ?? 0;
-            $hasPresetRoomRate = false;
-        }
+if ($roomRateValue === null) {
+    if ($isEdit && $booking->room_rate !== null) {
+
+        // Editing an existing booking → preset
+        $roomRateValue = $booking->room_rate;
+        $hasPresetRoomRate = true;
+
+    } else {
+
+        // New booking → NOT preset
+        $roomRateValue = optional($roomTypes->first())->base_rate ?? 0;
+        $hasPresetRoomRate = false;
+
     }
+}
+
 
     $roomRateValue = (float) $roomRateValue;
     $discountValue = (float) old('discount', $isEdit ? $booking->discount : 0);
@@ -207,7 +213,7 @@
                         <option value="">Select Type</option>
                         @foreach($roomTypes as $rt)
                             <option value="{{ $rt->id }}"
-                               
+                                data-rate="{{ number_format($rt->base_rate ?? 0, 2, '.', '') }}"
                                 {{ (string) old('room_type_id', $defaultRoomTypeId) === (string) $rt->id ? 'selected' : '' }}>
                                 {{ $rt->name }}
                             </option>
@@ -225,7 +231,7 @@
                             required>
                         <option value="">Select Room</option>
                         @if($isEdit && isset($booking) && $booking->room)
-                            <option value="{{ $booking->room->id }}" selected   data-rate="{{ number_format($booking->room_rate ?? 0, 2, '.', '') }}">
+                            <option value="{{ $booking->room->id }}" selected>
                                 {{ $booking->room->room_no }}
                             </option>
                         @endif
@@ -237,7 +243,7 @@
 
                 <div class="col-md-4">
                     <label for="room_status" class="form-label">Room Status <span class="text-danger">*</span></label>
-                    <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required readonly>
+                    <select name="room_status" id="room_status" class="form-select @error('room_status') is-invalid @enderror" required readonly style="pointer-events: none !important;">
                         @foreach($roomStatusOptions as $value => $label)
                             <option value="{{ $value }}" {{ old('room_status', $isEdit ? $booking->room_status : '') === $value ? 'selected' : '' }}>
                                 {{ $label }}
@@ -264,7 +270,7 @@
                 <div class="col-md-4">
                     <label for="occupancy_status" class="form-label">Occupancy Status <span class="text-danger">*</span></label>
                     <select name="occupancy_status" id="occupancy_status"
-                            class="form-select @error('occupancy_status') is-invalid @enderror" required readonly>
+                            class="form-select @error('occupancy_status') is-invalid @enderror" required readonly  style="pointer-events: none !important;">
                         @foreach($occupancyStatusOptions as $value => $label)
                             <option value="{{ $value }}" {{ old('occupancy_status', $isEdit ? $booking->occupancy_status : '') === $value ? 'selected' : '' }}>
                                 {{ $label }}
@@ -294,18 +300,32 @@
         </div>
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Room Rate (auto)</label>
-                    <input type="hidden" name="room_rate" id="room_rate"
-                           value="{{ number_format($roomRateValue, 2, '.', '') }}"
-                           data-has-preset="{{ $hasPresetRoomRate ? '1' : '0' }}">
-                    <input type="number" step="0.01" min="0" id="room_rate_display" class="form-control"
-                           value="{{ number_format($roomRateValue, 2, '.', '') }}" readonly>
-                    <small class="text-muted">Pulled from selected room type.</small>
-                    @error('room_rate')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
+              <div class="col-md-3">
+    <label class="form-label">Room Rate (auto)</label>
+
+    <!-- Hidden value stored for backend -->
+    <input type="text"
+           name="room_rate"
+           id="room_rate"
+           value="0"
+          >
+
+    <!-- Display-only input -->
+    <input type="number"
+           step="0.01"
+           min="0"
+           id="room_rate_display"
+           class="form-control"
+           value="0.00"
+           readonly>
+
+    <small class="text-muted">Pulled from selected room type.</small>
+
+    @error('room_rate')
+        <div class="text-danger small mt-1">{{ $message }}</div>
+    @enderror
+</div>
+
                 <div class="col-md-3">
                     <label for="discount" class="form-label">Discount (optional)</label>
                     <input type="number" step="0.01" min="0" name="discount" id="discount"
@@ -328,7 +348,10 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Total Amount (auto)</label>
-                    <input type="text" id="total_amount_display" class="form-control" value="{{ number_format($initialTotal, 2, '.', '') }}" readonly>
+                    <input type="text" name="total_amount" id="total_amount_display" class="form-control" value="{{ number_format($initialTotal, 2, '.', '') }}" readonly>
+                   
+
+                    
                 </div>
                 <div class="col-md-4">
                     <label for="payment_type" class="form-label">Payment Type <span class="text-danger">*</span></label>
@@ -673,20 +696,25 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
         allRooms = Array.from(roomSelect.options).map(opt => ({
             value: opt.value,
             text: opt.text,
-            selected: opt.selected
+            selected: opt.selected,
+            base_rate: opt.getAttribute('data-base-rate') || 0
         }));
     }
+
+
 
     const toFloat = (value) => {
         const parsed = parseFloat(value);
         return Number.isNaN(parsed) ? 0 : parsed;
     };
 
-    const setRoomRate = (value) => {
-        const normalized = toFloat(value);
-        roomRateHidden.value = normalized.toFixed(2);
-        roomRateDisplay.value = normalized.toFixed(2);
-    };
+  const setRoomRate = (value) => {
+    const normalized = toFloat(value);
+
+    // Always update both inputs
+    // roomRateHidden.value = normalized.toFixed(2);
+    // roomRateDisplay.value = normalized.toFixed(2);
+};
 
     const currentRoomRate = () => toFloat(roomRateHidden.value);
 
@@ -697,28 +725,33 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
         totalInput.value = total.toFixed(2);
     };
 
-    const syncRateWithRoomType = (force = false) => {
-        if (!force && hasPresetRate) {
-            updateTotals();
-            return;
-        }
-        const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
-        const rateFromType = option ? toFloat(option.dataset.rate || 0) : 0;
-        setRoomRate(rateFromType);
+   const syncRateWithRoomType = (force = false) => {
+    const option = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+    const rateFromType = option ? toFloat(option.dataset.rate || 0) : 0;
+
+    // Always update both fields first
+    setRoomRate(rateFromType);
+
+    // If preset exists, still keep updated value
+    if (!force && hasPresetRate) {
         updateTotals();
-    };
+        return;
+    }
+
+    updateTotals();
+};
 
     // Fetch available rooms
     const updateAvailableRooms = async () => {
         if (!roomSelect) return;
 
         const roomTypeId = roomTypeSelect.value;
-         const locationId = locationElem.value;
+        const locationId = locationElem.value;
         const checkIn = checkInInput.value;
         const checkOut = checkOutInput.value;
         const currentSelectedRoom = roomSelect.value; // Store current selection
 
-        if (!roomTypeId || !checkIn || !checkOut) {
+        if (!roomTypeId || !checkIn || !checkOut || !locationId) {
             restoreAllRooms();
             return;
         }
@@ -733,6 +766,7 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
             const url = new URL('{{ route("bookings.available-rooms") }}', window.location.origin);
             url.searchParams.append('location_id', locationId);
             url.searchParams.append('room_type_id', roomTypeId);
+
             url.searchParams.append('check_in_at', checkIn);
             url.searchParams.append('check_out_at', checkOut);
             if (excludeBookingId) url.searchParams.append('exclude_booking_id', excludeBookingId);
@@ -750,9 +784,10 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
             rooms.forEach(room => {
                 const option = document.createElement('option');
                 option.value = room.id;
+                 // Add base_rate here (IMPORTANT)
+                option.dataset.rate = room.base_rate ?? 0;
                 option.textContent = room.room_no ?? room.name ?? `Room ${room.id}`;
                 // Re-select the previously selected room if it's still available
-                option.dataset.rate = room.base_rate ?? (room.room_no?.base_rate ?? 0);
                 if (currentSelectedRoom && currentSelectedRoom === String(room.id)) {
                     option.selected = true;
                 }
@@ -861,7 +896,6 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
                         const opt = document.createElement('option');
                         opt.value = item.room_type_id ?? item.id ?? '';
                         opt.textContent = item.type?.name ?? item.name ?? 'Room Type';
-                        
                         roomTypeSelect.appendChild(opt);
                     });
                     syncRateWithRoomType(true);
@@ -914,7 +948,7 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
                     const opt = document.createElement('option');
                     opt.value = item.room_type_id ?? item.id ?? '';
                     opt.textContent = item.type?.name ?? item.name ?? 'Room Type';
-                   
+                    
                     if (opt.value === String(roomTypeId)) opt.selected = true;
                     roomTypeSelect.appendChild(opt);
                 });
@@ -929,6 +963,7 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
             try {
                 const excludeBookingId = roomSelect.dataset.excludeBookingId || null;
                 const url = new URL('{{ route("bookings.available-rooms") }}', window.location.origin);
+               url.searchParams.append('location_id', locationId);
                 url.searchParams.append('room_type_id', roomTypeId);
                 url.searchParams.append('check_in_at', checkInInput.value);
                 url.searchParams.append('check_out_at', checkOutInput.value);
@@ -951,14 +986,19 @@ if (checkOutInput) checkOutInput.addEventListener('change', resetBookingFields);
     roomSelect.appendChild(opt);
     return;
 }
-                rooms.forEach(room => {
-                    const option = document.createElement('option');
-                    option.value = room.id;
-                    option.textContent = room.room_no ?? room.name ?? `Room ${room.id}`;
-                      option.dataset.rate = room.base_rate ?? (room.room_no?.base_rate ?? 0);
-                    if (option.value === String(roomId)) option.selected = true;
-                    roomSelect.appendChild(option);
-                });
+              rooms.forEach(room => {
+    const option = document.createElement('option');
+    option.value = room.id;
+    option.textContent = room.room_no ?? room.name ?? `Room ${room.id}`;
+
+    // Add base_rate here (IMPORTANT)
+    option.dataset.rate = room.base_rate ?? 0;
+
+    if (currentSelectedRoom && currentSelectedRoom === String(room.id)) {
+        option.selected = true;
+    }
+    roomSelect.appendChild(option);
+});
 
                 // Trigger room details load if room is selected
                 if (roomId) {

@@ -102,11 +102,11 @@
                     <i class="fa-solid fa-bed fa-3x text-muted mb-3"></i>
                     <h5 class="mb-2">No bookings found</h5>
                     <p class="text-muted mb-4">Adjust your filters or create a new booking report.</p>
-                    @can('create', \App\Models\Booking::class)
+                   
                         <a href="{{ route('bookings.create') }}" class="btn btn-primary">
                             <i class="fa-solid fa-plus me-2"></i>Create Booking
                         </a>
-                    @endcan
+                   
                 </div>
             @else
                 <div class="table-responsive">
@@ -119,6 +119,7 @@
                                 <th>Stay</th>
                                 <th>Payment</th>
                                 <th>Status</th>
+                                <th>Created By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -166,6 +167,8 @@
                                     <td>
                                         <span class="badge {{ $bookingBadge }}">{{ \Illuminate\Support\Str::headline($booking->booking_status) }}</span>
                                     </td>
+                                    <td>{{ucfirst($booking->creator->name)}}<br>
+                                        <small class="text-muted">{{ ucfirst($booking->creator->role) }}</small></td>
                                     <td class="d-flex gap-2" style="min-height:80px;">
                                         <div>
                                         <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-outline-primary">

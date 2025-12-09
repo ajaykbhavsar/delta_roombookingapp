@@ -122,7 +122,7 @@ class BookingController extends Controller
 
         $this->ensureRoomIsAvailable($room->id, $checkInAt, $checkOutAt);
 
-        $payload['room_rate'] = $roomType->base_rate;
+        $payload['room_rate'] = $room->base_rate;
         $payload['discount'] = (float) ($payload['discount'] ?? 0);
         $payload['service_charges'] = (float) ($payload['service_charges'] ?? 0);
         $payload['total_amount'] = max(
@@ -132,6 +132,8 @@ class BookingController extends Controller
         $payload['reference_no'] = Booking::generateReference();
         $payload['created_by'] = $request->user()->id;
         $payload['is_repeat_customer'] = (bool) $payload['is_repeat_customer'];
+
+      
 
         $booking = Booking::create($payload);
 
@@ -163,15 +165,17 @@ class BookingController extends Controller
     $checkInAt = $this->parseDate($request->input('check_in_at'));
     $checkOutAt = $this->parseDate($request->input('check_out_at'));
     $roomTypeId = $request->input('room_type_id'); // fix: don't parse as date
+    $locationId=$request->input('location_id');
     $excludeBookingId = $request->input('exclude_booking_id') ? (int) $request->input('exclude_booking_id') : null;
 
-    $rooms = $this->availableRooms($excludeBookingId, $checkInAt, $checkOutAt, $roomTypeId);
+    $rooms = $this->availableRooms($excludeBookingId, $checkInAt, $checkOutAt, $roomTypeId ,$locationId);
 
     return response()->json([
         'rooms' => $rooms->map(function ($room) {
             return [
                 'id' => $room->id,
                 'room_no' => $room->room_no,
+                'base_rate'=>$room->base_rate
             ];
         })->values(),
     ]);
@@ -242,7 +246,7 @@ public function getRooms(Request $request)
 
         $this->ensureRoomIsAvailable($room->id, $checkInAt, $checkOutAt, $booking->id);
 
-        $payload['room_rate'] = $roomType->base_rate;
+        $payload['room_rate'] =  $room->base_rate;
         $payload['discount'] = (float) ($payload['discount'] ?? 0);
         $payload['service_charges'] = (float) ($payload['service_charges'] ?? 0);
         $payload['total_amount'] = max(
@@ -251,6 +255,7 @@ public function getRooms(Request $request)
         );
         $payload['is_repeat_customer'] = (bool) $payload['is_repeat_customer'];
 
+       
         $booking->update($payload);
 
         SystemLog::record('booking_updated', [
@@ -414,7 +419,7 @@ public function getRooms(Request $request)
         return $this->activeRoomsQuery()->orderBy('room_no')->get();
     }
 
-    protected function availableRooms(?int $excludeBookingId = null, ?Carbon $checkInAt = null, ?Carbon $checkOutAt = null, ?int $roomTypeId = null)
+    protected function availableRooms(?int $excludeBookingId = null, ?Carbon $checkInAt = null, ?Carbon $checkOutAt = null, ?int $roomTypeId = null ,int $locationId =null)
 {
     // Get room IDs that are occupied or have overlapping bookings
     $occupiedRoomIds = Booking::query()
@@ -450,6 +455,11 @@ public function getRooms(Request $request)
     // Filter by room type if provided
     if ($roomTypeId) {
         $query->where('room_type_id', $roomTypeId);
+    }
+
+    // Filter by room type if provided
+    if ($locationId) {
+        $query->where('location_id', $locationId);
     }
 
     return $query->get();
